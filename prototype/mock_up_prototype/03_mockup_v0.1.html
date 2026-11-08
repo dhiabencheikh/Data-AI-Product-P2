@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledgerly — agent inbox with the copilot (prototype)</title>
+<style>
+  :root {
+    --ground: #F4F5F7;
+    --panel: #FFFFFF;
+    --line: #E3E5EA;
+    --line-strong: #C9CDD5;
+    --text: #1B1F27;
+    --muted: #5B6270;
+    --soft: #3A404C;
+    --accent: #2450B8;
+    --accent-dark: #1A3C8C;
+    --accent-soft: #EAF0FB;
+    --ok: #1F5C3C;
+    --ok-soft: #E8F4EE;
+    --warn: #6B3A00;
+    --warn-soft: #FFF4E0;
+    --warn-line: #F0D3A1;
+    --grey-soft: #ECEEF2;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--text);
+         font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.45; }
+  header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+           padding: 12px 24px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  header .left, header .right { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .brand { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 6px; }
+  .tag.warn { color: #8A4B00; background: var(--warn-soft); }
+  .tag.ok { color: var(--ok); background: var(--ok-soft); }
+  .tag.grey { color: var(--soft); background: var(--grey-soft); }
+  .tag.blue { color: var(--accent-dark); background: var(--accent-soft); }
+  main { max-width: 1440px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+  nav { flex: 1 1 240px; max-width: 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  #ticket { flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  aside { flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .label { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .card h1 { margin: 0; font-size: 20px; }
+  .row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+  .msg { margin: 8px 0 0; font-size: 15px; line-height: 1.55; white-space: pre-line; }
+  .reply { background: #EEF3FC; border-color: #C9D6F2; }
+  .qitem { text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px;
+           font: inherit; color: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 4px; min-height: 44px; }
+  .qitem[aria-current="true"] { background: var(--accent-soft); border-color: var(--accent); }
+  .qitem .top { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
+  .qitem .subj { font-weight: 600; }
+  .qitem .who { font-size: 13px; color: var(--muted); }
+  .grid2 { margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
+  .k { font-size: 12px; color: var(--muted); }
+  .v { font-weight: 600; }
+  ul.checks { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  ul.checks li { display: flex; gap: 8px; align-items: flex-start; }
+  ul.plain { margin: 8px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; color: var(--soft); }
+  svg.ic { flex: none; margin-top: 2px; }
+  .chain { margin-top: 12px; display: flex; flex-direction: column; gap: 0; }
+  .stage { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; padding: 6px 0; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; margin-top: 3px; border: 2px solid var(--line-strong); background: var(--panel); }
+  .dot.done { background: #1F7A4D; border-color: #1F7A4D; }
+  .dot.stop { background: #B5651D; border-color: #B5651D; }
+  .stage .name { font-weight: 600; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  button.btn { border-radius: 8px; padding: 0 16px; height: 44px; font: inherit; font-weight: 600; cursor: pointer; }
+  button.primary { background: var(--accent); color: #FFFFFF; border: none; }
+  button.primary:hover { background: var(--accent-dark); }
+  button.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--line-strong); }
+  button.secondary:hover { border-color: var(--muted); }
+  button.link { background: none; border: none; color: var(--accent); padding: 0; height: auto; font: inherit; cursor: pointer; text-decoration: underline; }
+  button:focus-visible, .qitem:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid #8FB0F0; outline-offset: 2px; }
+  .banner { border-radius: 10px; padding: 12px 16px; line-height: 1.5; }
+  .banner.warn { background: var(--warn-soft); border: 1px solid var(--warn-line); color: var(--warn); }
+  .banner.ok { background: var(--ok-soft); color: var(--ok); }
+  .banner.grey { background: var(--grey-soft); color: var(--soft); }
+  .status { margin-top: 12px; padding: 12px; background: var(--ground); border-radius: 8px; line-height: 1.5; }
+  .draft { white-space: pre-line; line-height: 1.55; padding: 12px; border: 1px solid var(--line); border-radius: 8px; margin-top: 8px; }
+  .ref { background: var(--accent-soft); color: var(--accent-dark); border-radius: 4px; padding: 0 3px; font-weight: 600; }
+  textarea { width: 100%; min-height: 220px; font: inherit; line-height: 1.55; padding: 12px; border: 1px solid var(--accent); border-radius: 8px; margin-top: 8px; }
+  .guard { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; font-size: 13px; }
+  .guard.ok { color: var(--ok); }
+  .guard.warn { color: var(--warn); }
+  details summary { cursor: pointer; color: var(--accent); margin-top: 12px; }
+  .note { font-size: 12px; color: var(--muted); }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="left">
+    <span class="brand">Ledgerly Support</span>
+    <span class="muted">Queue: Payments · 4 tickets</span>
+  </div>
+  <div class="right">
+    <span class="tag warn">Mock-up · invented data</span>
+    <span>Inès · tier-1 agent</span>
+  </div>
+</header>
+
+<main>
+  <nav aria-label="Open tickets">
+    <div class="label">Open tickets</div>
+    <div id="queue" style="display:flex; flex-direction:column; gap:8px"></div>
+  </nav>
+
+  <section id="ticket" aria-label="Ticket"></section>
+
+  <aside id="copilot" aria-label="Copilot">
+  </aside>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- invented data ---------- */
+  var TICKETS = {
+    T1: {
+      ref: "T-48213", time: "09:12", subject: "Dupont payment not received",
+      merchant: "Studio Lune", merchantId: "M-0412", since: "March 2023", from: "Claire (Studio Lune)",
+      form: "Free message (sent without the form's transaction fields)",
+      text: "Hello,\nI still haven't received Dupont's payment, about €1,200, from last week. Can you check what's going on? It's urgent, we have to pay a supplier on Friday.\nClaire — Studio Lune",
+      kind: "match"
+    },
+    T2: {
+      ref: "T-48219", time: "09:26", subject: "Customer payment not found",
+      merchant: "Boulangerie Ferrand", merchantId: "M-0157", since: "June 2024", from: "Paul (Boulangerie Ferrand)",
+      form: "Free message (no form fields)",
+      text: "Hello,\nA customer tells me he paid me €480 at the start of November but I can't see anything. Could you have a look please?\nThanks, Paul",
+      kind: "nomatch"
+    },
+    T3: {
+      ref: "T-48224", time: "09:41", subject: "Dispute on a payment",
+      merchant: "Garage Auclair", merchantId: "M-0733", since: "January 2022", from: "Mr Auclair (Garage Auclair)",
+      form: "Form fields: reference TX-87655 · amount €2,350.00 · date 28 Oct",
+      text: "Hello,\nA customer has opened a dispute on the €2,350 payment of 28 October. The repair was done: I want you to reject this dispute and pay me the money.\nRegards, Mr Auclair",
+      kind: "dispute"
+    },
+    T4: {
+      ref: "T-48230", time: "09:55", subject: "Payment not arrived after bank change",
+      merchant: "Menuiserie Vidal", merchantId: "M-0291", since: "May 2021", from: "Léa (Menuiserie Vidal)",
+      form: "Form fields: reference TX-90410 · amount €4,800.00 · date 4 Nov",
+      text: "Hello,\nThe €4,800 payment of 4 November has not arrived. We changed bank last week, is that the problem?\nLéa — Menuiserie Vidal",
+      kind: "flag"
+    }
+  };
+
+  var DRAFTS = {
+    T1: "Hello Claire,\n\nThe payment of €1,200.00 from DUPONT RENOVATION SARL (ref. TX-88412) was received on 3 November. It was paid out to your account ending in 4471 on 5 November, grouped with two other payments in a single transfer of €3,480.00 (ref. VO-2291). That is the amount you will see on your bank statement.\n\nKind regards,\nInès — Ledgerly Support",
+    T3: "Hello Mr Auclair,\n\nThe dispute concerns the payment of €2,350.00 of 28 October (ref. TX-87655). It was opened on 6 November by your customer's bank, and the funds are on hold while it is reviewed.\n\nTo respond, please send us the invoice and the work order signed by your customer before 16 November. We will pass your file on; the decision belongs to your customer's bank.\n\nKind regards,\nInès — Ledgerly Support"
+  };
+  var REFS = ["TX-88412", "VO-2291", "TX-87655", "4471", "€1,200.00", "€3,480.00", "€2,350.00", "16 November", "3 November", "5 November", "6 November"];
+
+  /* ---------- state ---------- */
+  var state = {
+    sel: "T1",
+    step: { T1: "review", T2: "review", T3: "review", T4: "review" }, // review | confirmed | rejected | sent | handed
+    editing: false,
+    text: { T1: DRAFTS.T1, T3: DRAFTS.T3 },
+    sentAt: { T1: "09:21", T3: "09:48" }
+  };
+
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function check() {
+    return '<svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="#1F7A4D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+  function warnIcon() {
+    return '<svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5l6 11H2l6-11z M8 6.5v3.2 M8 11.6v.2" stroke="#8A4B00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+  function highlightRefs(text) {
+    var out = esc(text);
+    REFS.forEach(function (r) {
+      out = out.split(esc(r)).join('<span class="ref">' + esc(r) + "</span>");
+    });
+    return out;
+  }
+  function btn(cls, action, label) {
+    return '<button type="button" class="btn ' + cls + '" data-action="' + action + '">' + label + "</button>";
+  }
+  function stage(cls, name, detail) {
+    return '<div class="stage"><span class="dot ' + cls + '" aria-hidden="true"></span><div><div class="name">' + name + '</div><div class="muted">' + detail + "</div></div></div>";
+  }
+  function statusOf(id) {
+    var s = state.step[id];
+    if (s === "sent") return "Answered";
+    if (s === "handed") return "Handed over";
+    return "Open";
+  }
+
+  /* ---------- queue ---------- */
+  function renderQueue() {
+    var html = "";
+    Object.keys(TICKETS).forEach(function (id) {
+      var t = TICKETS[id];
+      html += '<button type="button" class="qitem" data-action="pick" data-id="' + id + '" aria-current="' + (id === state.sel) + '">' +
+        '<span class="top"><span>' + t.ref + " · " + t.time + "</span><span>" + statusOf(id) + "</span></span>" +
+        '<span class="subj">' + esc(t.subject) + "</span>" +
+        '<span class="who">' + esc(t.merchant) + "</span></button>";
+    });
+    document.getElementById("queue").innerHTML = html;
+  }
+
+  /* ---------- ticket column ---------- */
+  function renderTicket() {
+    var id = state.sel, t = TICKETS[id], s = state.step[id];
+    var html = '<div class="card"><div class="row"><h1>' + esc(t.subject) + '</h1><span class="small muted">' + t.ref + " · received " + t.time + " · web form</span></div>" +
+      '<p class="muted" style="margin:8px 0 0">' + esc(t.merchant) + " · merchant " + t.merchantId + " · customer since " + t.since + "</p></div>";
+    html += '<div class="card"><div class="small muted">' + esc(t.from) + " · " + t.time + "</div>" +
+      '<p class="small muted" style="margin:8px 0 0">' + esc(t.form) + "</p>" +
+      '<p class="msg">' + esc(t.text) + "</p></div>";
+    if (s === "sent") {
+      html += '<div class="card reply"><div class="small muted">You · ' + state.sentAt[id] + '</div><p class="msg">' + esc(state.text[id]) + "</p></div>";
+    }
+    if (s === "handed") {
+      html += '<div class="card"><div class="small muted">Internal note · not visible to the merchant</div><p class="msg">Handed to a referent with the copilot pre-read attached.</p></div>';
+    }
+    document.getElementById("ticket").innerHTML = html;
+  }
+
+  /* ---------- copilot panel ---------- */
+  function intro() {
+    return '<div class="card"><div style="font-size:16px; font-weight:700">Copilot · account pre-read</div>' +
+      '<p class="small muted" style="margin:4px 0 0">It proposes; you check and you send. It never sends anything to the merchant and never moves money.</p></div>';
+  }
+  function flagsCard(id) {
+    if (id === "T4") {
+      return '<div class="banner warn"><strong>Open flag on this account:</strong> bank details change in progress — new IBAN pending verification since 2 Nov. Check this before anything else.</div>';
+    }
+    return '<div class="banner grey small">No open flag on this account (bank details, contract, terms).</div>';
+  }
+  function handedCard() {
+    return '<div class="card"><div class="label">Handed over</div><p style="margin:8px 0 0">The ticket is with a referent, with this pre-read attached. Nothing was sent to the merchant.</p>' +
+      '<div class="actions">' + btn("secondary", "back", "Take the ticket back") + "</div></div>";
+  }
+  function rejectedCard(candidates) {
+    return '<div class="card"><div class="label">No transaction selected</div>' +
+      '<p style="margin:8px 0 0">The ticket works as it does today: search the merchant\'s ledger. Nearby payments found:</p>' +
+      '<ul class="plain">' + candidates.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ul>" +
+      '<div class="actions">' + btn("secondary", "noop", "Open the merchant's ledger") + btn("secondary", "back", "Back to the proposal") + "</div></div>";
+  }
+  function draftCard(id, guardHtml) {
+    var s = state.step[id];
+    var html = '<div class="card"><div class="label">Draft reply</div>';
+    if (s === "review") {
+      html += '<p class="muted" style="margin:8px 0 0">The draft appears once you have confirmed the transaction.</p>';
+    } else if (s === "rejected") {
+      html += '<p class="muted" style="margin:8px 0 0">No draft without a confirmed transaction. Write the reply as usual.</p>';
+    } else if (s === "confirmed") {
+      if (state.editing) {
+        html += '<label for="draft" class="note" style="display:block; margin-top:8px">Edit the draft before sending it</label>' +
+          '<textarea id="draft">' + esc(state.text[id]) + "</textarea>";
+      } else {
+        html += '<div class="draft">' + highlightRefs(state.text[id]) + "</div>" +
+          '<p class="note" style="margin:6px 0 0">Highlighted references are filled in from the ledger, not typed.</p>';
+      }
+      html += guardHtml;
+      html += '<div class="actions">' + btn("primary", "send", "Send") +
+        btn("secondary", "edit", state.editing ? "Done editing" : "Edit") + "</div>";
+    } else if (s === "sent") {
+      html += '<div class="banner ok" style="margin-top:8px">Reply sent by you at ' + state.sentAt[id] + " · " + (id === "T1" ? "TX-88412" : "TX-87655") + " linked to the ticket and logged.</div>";
+    }
+    return html + "</div>";
+  }
+
+  function panelT1() {
+    var s = state.step.T1, html = flagsCard("T1");
+    if (s === "handed") return html + handedCard();
+    if (s === "rejected") {
+      html += rejectedCard(["TX-88412 · €1,200.00 · 3 Nov · DUPONT RENOVATION SARL", "TX-88390 · €1,150.00 · 2 Nov · DUPUIS &amp; FILS", "TX-88021 · €1,200.00 · 20 Oct · DUPONT RENOVATION SARL"]);
+    } else {
+      html += '<div class="card"><div class="row"><span class="label">Proposed transaction</span><span class="tag ' + (s === "review" ? "ok" : "blue") + '">' + (s === "review" ? "Confident match" : "Confirmed by you") + "</span></div>" +
+        '<div class="grid2"><div><div class="k">Reference</div><div class="v">TX-88412</div></div><div><div class="k">Amount</div><div class="v">€1,200.00</div></div>' +
+        '<div><div class="k">Received on</div><div class="v">3 Nov 2026</div></div><div><div class="k">Payer</div><div class="v">DUPONT RENOVATION SARL</div></div></div>' +
+        '<div class="label" style="margin-top:16px">Where it is</div><div class="chain">' +
+        stage("done", "Payer's bank", "Payment collected on 3 Nov") +
+        stage("done", "Ledgerly", "Received on 3 Nov · grouped in transfer VO-2291 (€3,480.00, 3 payments)") +
+        stage("done", "Merchant's bank", "Paid out on 5 Nov to account •• 4471 · no error code") +
+        "</div>" +
+        '<div class="label" style="margin-top:12px">Why this one</div><ul class="checks">' +
+        "<li>" + check() + '<span>Amount: €1,200.00 — the ticket says "about €1,200"</span></li>' +
+        "<li>" + check() + '<span>Date: 3 Nov, within "last week"</span></li>' +
+        "<li>" + check() + '<span>Payer: "Dupont" = DUPONT RENOVATION SARL</span></li>' +
+        "<li>" + check() + "<span>Only payment from this payer in the last 30 days</span></li></ul>" +
+        "<details><summary>2 other candidates ruled out</summary><ul class=\"plain\">" +
+        "<li>TX-88390 · €1,150.00 · 2 Nov · DUPUIS &amp; FILS — different payer</li>" +
+        '<li>TX-88021 · €1,200.00 · 20 Oct · DUPONT RENOVATION SARL — outside "last week"</li></ul></details>';
+      if (s === "review") {
+        html += '<div class="actions">' + btn("primary", "confirm", "Confirm this transaction") + btn("secondary", "reject", "Not this one") + "</div>";
+      }
+      html += "</div>";
+    }
+    html += '<div class="card"><div class="label">Account history</div><ul class="plain" style="color:inherit">' +
+      "<li>14 Oct — ticket T-47102: same question about a grouped transfer, solved by explaining the grouping.</li>" +
+      "<li>Since 1 Oct, Studio Lune's payments are paid out in one transfer a day (merchant setting).</li>" +
+      "<li>No open dispute, no failed payout.</li></ul></div>";
+    html += draftCard("T1", '<div class="guard ok">' + check() + "<span>Checked: no refund or chargeback promised</span></div>");
+    if (s === "review" || s === "rejected") {
+      html += '<div class="card small">Not sure? ' + btn("link", "handover", "Hand to a referent with this pre-read") + "</div>";
+    }
+    return html;
+  }
+
+  function panelT2() {
+    var s = state.step.T2, html = flagsCard("T2");
+    if (s === "handed") return html + handedCard();
+    html += '<div class="card"><div class="row"><span class="label">Proposed transaction</span><span class="tag grey">No confident match</span></div>' +
+      '<p style="margin:12px 0 0">3 payments of €480.00 between 2 and 4 Nov, from 3 different payers. The ticket does not say who the customer is: the copilot does not choose for you.</p>' +
+      '<ul class="plain"><li>TX-88301 · €480.00 · 2 Nov · M. ROUX · paid out 4 Nov</li><li>TX-88355 · €480.00 · 3 Nov · SCI LES TILLEULS · paid out 5 Nov</li><li>TX-88437 · €480.00 · 4 Nov · A. NGUYEN · paid out 6 Nov</li></ul>' +
+      '<p style="margin:12px 0 0">No draft proposed. Ask the merchant for the customer\'s name or the reference, or search as usual.</p>' +
+      '<div class="actions">' + btn("secondary", "noop", "Open the merchant's ledger") + btn("secondary", "handover", "Hand to a referent") + "</div></div>";
+    html += '<div class="card"><div class="label">Account history</div><ul class="plain" style="color:inherit"><li>2 tickets in 2026, none about a missing payment.</li><li>No open dispute, no failed payout.</li></ul></div>';
+    return html;
+  }
+
+  function panelT3() {
+    var s = state.step.T3, html = flagsCard("T3");
+    html += '<div class="banner warn"><strong>Human decision only: dispute (chargeback).</strong> The copilot prepares the file; it decides nothing.</div>';
+    if (s === "handed") return html + handedCard();
+    if (s === "rejected") {
+      html += rejectedCard(["TX-87655 · €2,350.00 · 28 Oct · P. LEROY"]);
+    } else {
+      html += '<div class="card"><div class="row"><span class="label">Proposed transaction</span><span class="tag ' + (s === "review" ? "ok" : "blue") + '">' + (s === "review" ? "Confident match" : "Confirmed by you") + "</span></div>" +
+        '<div class="grid2"><div><div class="k">Reference</div><div class="v">TX-87655</div></div><div><div class="k">Amount</div><div class="v">€2,350.00</div></div>' +
+        '<div><div class="k">Received on</div><div class="v">28 Oct 2026</div></div><div><div class="k">Payer</div><div class="v">P. LEROY</div></div></div>' +
+        '<div class="label" style="margin-top:16px">Where it is</div><div class="chain">' +
+        stage("stop", "Payer's bank", "Dispute opened on 6 Nov") +
+        stage("stop", "Ledgerly", "Funds on hold while the dispute is reviewed") +
+        stage("", "Merchant's bank", "Not paid out") +
+        "</div>" +
+        '<div class="label" style="margin-top:12px">Why this one</div><ul class="checks">' +
+        "<li>" + check() + "<span>Reference given in the form: TX-87655</span></li>" +
+        "<li>" + check() + "<span>Amount and date match exactly</span></li>" +
+        "<li>" + check() + "<span>Only open dispute on the account</span></li></ul>";
+      if (s === "review") {
+        html += '<div class="actions">' + btn("primary", "confirm", "Confirm this transaction") + btn("secondary", "reject", "Not this one") + "</div>";
+      }
+      html += "</div>";
+    }
+    html += '<div class="card"><div class="label">Applicable rule</div><p style="margin:8px 0 0">Dispute policy §4.2: the merchant has 10 days, until 16 Nov, to send supporting documents. Ledgerly passes them on; the payer\'s bank decides.</p></div>';
+    html += draftCard("T3", '<div class="guard warn">' + warnIcon() + '<span>Guardrail: the request "reject this dispute" is not repeated. No outcome is promised.</span></div>');
+    if (s === "review" || s === "rejected") {
+      html += '<div class="card small">Not sure? ' + btn("link", "handover", "Hand to a referent with this pre-read") + "</div>";
+    }
+    return html;
+  }
+
+  function panelT4() {
+    var s = state.step.T4, html = flagsCard("T4");
+    if (s === "handed") return html + handedCard();
+    html += '<div class="card"><div class="row"><span class="label">Proposed transaction</span><span class="tag ok">Confident match</span></div>' +
+      '<div class="grid2"><div><div class="k">Reference</div><div class="v">TX-90410</div></div><div><div class="k">Amount</div><div class="v">€4,800.00</div></div>' +
+      '<div><div class="k">Received on</div><div class="v">4 Nov 2026</div></div><div><div class="k">Payer</div><div class="v">BATIMAT OUEST</div></div></div>' +
+      '<div class="label" style="margin-top:16px">Where it is</div><div class="chain">' +
+      stage("done", "Payer's bank", "Payment collected on 4 Nov") +
+      stage("done", "Ledgerly", "Received on 4 Nov · payout VO-3372 sent on 6 Nov") +
+      stage("stop", "Merchant's bank", "Sent to the OLD account •• 8812 — the new IBAN was not verified yet") +
+      "</div>" +
+      '<div class="status"><strong>Why no draft:</strong> money already sent to the old account cannot be recalled by support. A referent must handle bank-change cases.</div>' +
+      '<div class="actions">' + btn("primary", "handover", "Hand to a referent with this pre-read") + "</div></div>";
+    html += '<div class="card"><div class="label">Account history</div><ul class="plain" style="color:inherit"><li>2 Nov — bank details change requested by the merchant (pending verification).</li><li>No open dispute.</li></ul></div>';
+    return html;
+  }
+
+  function renderPanel() {
+    var id = state.sel, body;
+    if (id === "T1") body = panelT1();
+    else if (id === "T2") body = panelT2();
+    else if (id === "T3") body = panelT3();
+    else body = panelT4();
+    document.getElementById("copilot").innerHTML = intro() + body;
+  }
+
+  function render() {
+    renderQueue();
+    renderTicket();
+    renderPanel();
+  }
+
+  /* ---------- events ---------- */
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-action]");
+    if (!el) return;
+    var a = el.getAttribute("data-action"), id = state.sel;
+    if (a === "pick") { state.sel = el.getAttribute("data-id"); state.editing = false; }
+    else if (a === "confirm") { state.step[id] = "confirmed"; }
+    else if (a === "reject") { state.step[id] = "rejected"; state.editing = false; }
+    else if (a === "back") { state.step[id] = "review"; state.editing = false; }
+    else if (a === "handover") { state.step[id] = "handed"; state.editing = false; }
+    else if (a === "edit") { state.editing = !state.editing; }
+    else if (a === "send") { state.step[id] = "sent"; state.editing = false; }
+    else if (a === "noop") { return; }
+    render();
+    if (a === "edit" && state.editing) {
+      var ta = document.getElementById("draft");
+      if (ta) ta.focus();
+    }
+  });
+  document.addEventListener("input", function (e) {
+    if (e.target && e.target.id === "draft") { state.text[state.sel] = e.target.value; }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

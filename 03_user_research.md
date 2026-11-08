@@ -1,7 +1,7 @@
 # 03 — User research · Ledgerly agent-assist copilot
 
 > Three conversations (about 20 min each), Mom Test rules: past behaviour, no pitching, never "would you use…?".
-> All three are **role-played**: none of the three people works in payments support or for a payments platform. Each recording says so at the start. The conversations were held in French; quotes are translated from the transcripts. The scripts were done by an IA from MP3 files and can have some minor flaws in the transcripts.
+> All three are **role-played**: none of the three people works in payments support or for a payments platform. Each recording says so at the start. The conversations were held in French; quotes are translated from the transcripts. The scripts were done by an AI from MP3 files and can have some minor flaws in the transcripts.
 
 ## Who we talked to
 | # | Who (role, company type — no personal data) | Real user or classmate in role? | Interviewer · note-taker |
