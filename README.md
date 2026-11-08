@@ -8,7 +8,7 @@
 |---|---|
 | Dhia Ben Cheikh | @dhiabencheikh |
 | Saumya Joshi | @sjoshi-rgb |
-| Louise Caquelin | _to be filled_ |
+| Louise Caquelin | @lcaquelin |
 | Santiago Pastrana | _to be filled_ |
 
 ## Our agent
