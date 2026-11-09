@@ -26,7 +26,7 @@ Oh, the time, well, the time, when it's how-do-I-do-this questions, generally it
 
 **Interviewer**
 
-OK, me, I'd like to know the last time you got the wrong payment or the wrong *tafé* [unclear in the original], what happened and how did you realize it?
+OK, me, I'd like to know the last time you got the wrong payment or the wrong transaction, what happened and how did you realize it?
 
 **Person A**
 
