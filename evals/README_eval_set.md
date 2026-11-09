@@ -26,7 +26,13 @@
 Pasted as used, unedited.
 
 ```text
-[TO FILL — paste the exact prompt given to Claude to generate the inputs]
+Please generate an eval_set_v0.csv based on the model enclosed. I need exactly 20 tickets. It has to be created with unique tickets not existing nowhere. Enclosed you have the full instruction and I want you only to generate the part 9 for this file. 
+Please this repository on this branch : https://github.com/dhiabencheikh/Data-AI-Product-P2/tree/5-assignment-3
+Read all the files on this repo before to generate to understand the content. 
+Please follow strictetly the guides in the repo already written and don't make important choices by yourself, if you hesitate or ask a question, I prefer you to ask me. 
+Ask me as many relevant questions as you want to do so.
+Also, read thes files to guide you from the repo, please mind inconsistencies you may find. Don't handle it yourself please, just tell me and ask to choose the direction to take.
+Mind to be exhaustive and cover different situation a user can find. Read the pdf files to generate ticket relevant from interviews.
 ```
 
 ## Labelling rule
