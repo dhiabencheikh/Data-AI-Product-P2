@@ -51,17 +51,31 @@
 
 ## Usability test — one task, think aloud, don't help
 **Prototype link:** see `03_prototype_link.md` · **Task given:** "Ticket T-48213: Studio Lune says it has not received Dupont's payment of about €1,200 from last week. Handle the ticket until the reply is sent."
-**Testers:** A and B (the two support agents), same role-play.
+**Testers:** A and B (the two support agents), same role-play, said again at the start of each test. The interviewer did not help. Transcripts: `A3_interviews_transcripts/EN/Test_mock_up_EN/` (French originals in `A3_interviews_transcripts/FR/Test_mock_up_FR/`).
 
 | Tester | Finished without help? (yes / no) | Where they hesitated | What they expected instead |
 |---|---|---|---|
-| A | *(to run)* | | |
-| B | *(to run)* | | |
+| A | **Yes** — about 3 min, her own estimate; the same kind of ticket usually takes her "ten minutes, a quarter of an hour if it's a mess" | At the fourth "why this one" line, "Only payment from this payer in the last 30 days": she opened the candidates ruled out and found TX-88021, €1,200, 20 Oct, same payer. The match was still right, but "if it puts a green tick on something that's wrong, then, the other ticks, I don't trust them anymore". Then the draft: correct, but she edited it before sending | Evidence lines that are never wrong; the payments inside transfer VO-2291 listed; a draft that gives the cause (one transfer a day since 1 Oct, the same question on 14 Oct) and answers the urgency (the money is already on the account since 5 Nov) |
+| B | **Yes** — about 5 min, her own estimate; her last similar ticket took "forty minutes, with the time to ask" A | She wanted to check the transaction and clicked "Not this one", the only button that opened something: "I was scared I'd broken something". She went back on her own ("Back to the proposal"). And "confident": "I don't know if it's 100 or 60 percent sure" | A button that opens the transaction in the ledger without rejecting it; "a percentage, or a level, next to 'confident'"; to see what the copilot does when the ticket gives nothing |
+
+### What we saw in the test
+| # | Quote or observed behaviour | Which part of our brief it confirms or contradicts |
+|---|---|---|
+| T1 | A found the false "only payment from this payer in the last 30 days" line because "I always open everything, but I don't think everyone opens it. The new people especially" | **Contradicts** our evidence design: one false line ruins the trust in all of them, and new agents (our main users) would not see it. Every evidence line must come from the ledger, and a false line is a FAIL in the eval-set |
+| T2 | B clicked "Not this one" when she only wanted to check: "There should be a 'check' button next to it, that doesn't say no" | **Contradicts** the panel's actions: checking is not rejecting |
+| T3 | B: "'confident', I don't know if it's 100 or 60 percent sure"; the "why this one" lines reassured her. A did not ask for a level | **Open question**, not a change yet (brief §10) |
+| T4 | A: "If she replies to me 'what are the two others in the 3,480?', I have to go look for them" | **Adds** a detail to step 2: a grouped transfer lists its payments |
+| T5 | A edited the draft: "If I just tell her 'it's in a grouped transfer', she'll be back in three weeks"; she added the daily-transfer setting and that the money has been on the account since 5 Nov | **Adds** to the draft: the cause when the account history holds it, and an answer to the urgency the merchant states |
+| T6 | Both asked about tickets with nothing in them. A: "If it tells me 'I don't know, ask him for the reference', that's fine by me, at least it doesn't make things up"; B: "If it tells me what question to ask the customer, that would already help me" | **Confirms** "no confident match" and the question to ask the merchant (v2). Not tested yet: T-48219 was not in the task |
+| T7 | B on the references filled in from the ledger: "copying and re-checking the numbers, and here, it's already done, I just have to compare"; she liked seeing the candidates ruled out: "that's where I sometimes get it wrong" | **Confirms** the draft MUST and the candidates ruled out |
+| T8 | A: merchants who ask the same question again could get "a little tutorial or a message to explain their setting", but "that's no longer support" | **Out of scope**: proactive messages to merchants join the WON'T list |
+
+The times (3 and 5 min) are the testers' own estimates, in a role-play, on one ticket: they are not a measurement and do not move the success criterion. The timed test on the eval-set decides.
 
 ## Desirability gate — do they want it?
-- [ ] 2 of 2 finished the task without help
-- [x] They told us what they did last time — not what they would do (A's last error, B's first ticket, C's last ticket)
-- [ ] At least one said "I want this before…"
-- [ ] Our out-of-scope list grew; our success criterion did not move
+- [x] 2 of 2 finished the task without help (B went back from "Not this one" on her own)
+- [x] They told us what they did last time — not what they would do (interviews: A's last error, B's first ticket, C's last ticket; test: A's weekly grouped transfers, B's grouped-transfer ticket of last week)
+- [x] At least one said "I want this before…" — B: "I would have really liked to have this when I started."
+- [x] Our out-of-scope list grew; our success criterion did not move ("how do I" questions after the interviews, proactive messages to merchants after the test; the criterion is the same)
 
-**Decision:** *(after the usability test)*
+**Decision:** we keep the scope and the success criterion, and we build for real with five changes from the test: (1) every "why this one" line comes from the ledger, and candidates from the same payer are shown open; (2) a "Check in the ledger" button next to "Confirm" and "Not this one"; (3) a grouped transfer lists its payments; (4) the draft gives the cause found in the account history and answers the urgency the merchant states; (5) the next test runs the "no confident match" path (T-48219), which nobody has tried.

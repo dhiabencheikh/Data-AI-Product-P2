@@ -1,6 +1,6 @@
 # 03 — Product brief · Ledgerly agent-assist copilot · v2
 
-**Team:** Team Ledgerly · **Starting point:** P2 — agent-assist copilot, B2B payments fintech · **Version:** v2 — v1 plus the changes from three user conversations (sections 9–10)
+**Team:** Team Ledgerly · **Starting point:** P2 — agent-assist copilot, B2B payments fintech · **Version:** v2 — v1 plus the changes from three user conversations and one usability test with two of them (sections 9–10)
 
 > Every number says where it comes from: *(m)* measured · *(a)* analogy · *(g)* guess. Most of them come from `01_problem_statement.md` and `02_sizing.xlsx`.
 
@@ -47,7 +47,7 @@ Reach from `02_sizing.xlsx`: 12,000 tickets a month; 8,400 where the copilot pro
 - **MUST (≤ 4):** transaction and where it is stuck, with evidence, or "no confident match" · account summary, open flags first · draft reply with references filled in · policy guard.
 - **SHOULD:** audit log.
 - **COULD:** ticket category tag.
-- **WON'T this time (≥ 5) — this is the out-of-scope list, decided 8 November 2026:** (1) auto-send, even when confident · (2) automatic refunds, chargebacks or fee waivers · (3) any chat or bot that talks to merchants · (4) tickets that span several merchant accounts · (5) fine-tuning a model on merchant or payer data · (6) tickets in languages other than French and English · (7) "how do I" questions answered from the documentation, with no payment to look up (added after the users).
+- **WON'T this time (≥ 5) — this is the out-of-scope list, decided 8 November 2026:** (1) auto-send, even when confident · (2) automatic refunds, chargebacks or fee waivers · (3) any chat or bot that talks to merchants · (4) tickets that span several merchant accounts · (5) fine-tuning a model on merchant or payer data · (6) tickets in languages other than French and English · (7) "how do I" questions answered from the documentation, with no payment to look up (added after the users) · (8) proactive messages to merchants, e.g. a tutorial for those who ask the same question again (added after the usability test).
 - **The feature that tests our flip assumption, and why it is a MUST:** the transaction and where it is stuck. The flip assumption is the share of handling time saved on covered tickets (38 %), and almost all of it comes from not searching the ledger, payout and bank tools. It is only fourth in RICE because its confidence is 50 %: it is our riskiest assumption, so we build it first, to learn.
 - **The cut that hurt the most:** the audit log. We promised it to the auditor in `governance.md`, but the eval-set test does not need it; it becomes a MUST before the first live ticket.
 
@@ -67,7 +67,7 @@ Ledgerly's own systems: tickets and replies, the ledger, payouts, the CRM accoun
 | **The MVP** | **4 · hybrid** | Each part sits on its own rung |
 
 ## 6. Where it lives (integration surface)
-A side panel inside the ticket view the agents already use, filled when the ticket arrives so it is ready before the agent opens it (under 30 s *(g)*). Format: open account flags first (bank change in progress, contract, terms), then the matched transaction card (amount, date, counterparty, where it is stuck, why it matches), the account summary, the draft. Fallback: no confident match, or the copilot is down → the panel says so and the ticket works exactly as today. Log: seen by the agent, the QA reviewer and the Head of Support.
+A side panel inside the ticket view the agents already use, filled when the ticket arrives so it is ready before the agent opens it (under 30 s *(g)*). Format: open account flags first (bank change in progress, contract, terms), then the matched transaction card (amount, date, counterparty, where it is stuck, the payments grouped in the same transfer, why it matches — every line computed from the ledger — and the candidates ruled out, same payer shown open), with three actions: "Confirm", "Check in the ledger", "Not this one"; then the account summary, the draft. Fallback: no confident match, or the copilot is down → the panel says so and the ticket works exactly as today. Log: seen by the agent, the QA reviewer and the Head of Support.
 
 ## 7. Success criterion — one sentence
 > By Session 5, on our 200-ticket eval-set, handling time falls by at least 38 % on the tickets where the copilot proposes a match (two graders handle each ticket, timed, with and without the copilot) — and no more than 0.5 % of those tickets end with a wrong transaction in the approved reply.
@@ -79,7 +79,7 @@ The 38 % and the 0.5 % are the flip point of `02_investment_memo.md`. It assumes
 - **Rollback trigger (one line):** more than 0.5 % of sent replies citing the wrong transaction in a week, or any draft showing another merchant's data → the Head of Support turns drafts off for everyone the same day.
 
 ---
-*v2 only — after the users. Evidence numbers (#) refer to the "What we heard" table in `03_user_research.md`. The usability test on the prototype is still to run.*
+*v2 only — after the users. Evidence numbers refer to `03_user_research.md`: #1–#16 to the "What we heard" table (interviews), T1–T8 to "What we saw in the test" (usability test with A and B).*
 
 ## 9. What the users changed
 | Change | Evidence (who said / did what) |
@@ -92,8 +92,14 @@ The 38 % and the 0.5 % are the flip point of `02_investment_memo.md`. It assumes
 | The out-of-scope list grew: **"how do I" questions** answered from the documentation are a WON'T | A's one change: the many "how do I do this" tickets, answered from the docs, not the ledger (#10) |
 | The users who gain the most are **new agents**, named in the persona | B: first ticket about an hour, now 5 minutes; A: helping new agents takes "twice as long" (#11) |
 | The eval-set gains two segments: **open account flags** and **payments touched by an offer or a cashback** | A's bank-change error (#6); cashback and discounts create cent-level differences that block payouts (A, B), and problems came after commercial offers (C) (#15) |
+| *After the usability test* | |
+| Every "why this one" line is **computed from the ledger, never written in advance**, and candidates from the same payer are **shown open**, not behind a link. A false evidence line is a FAIL in the eval-set, even when the match is right | A found a false line ("only payment from this payer in the last 30 days": TX-88021 is from the same payer) and stopped trusting the others; new agents would not open the list (T1) |
+| A **"Check in the ledger"** button next to "Confirm" and "Not this one": checking is not rejecting | B clicked "Not this one" when she only wanted to check, and asked for "a 'check' button next to it, that doesn't say no" (T2) |
+| A grouped transfer **lists the payments in it** | A: "what are the two others in the 3,480?" (T4) |
+| The draft **gives the cause** when the account history holds it (a merchant setting, the same question already asked) and **answers the urgency** the merchant states — still only what the ledger and the history show | A edited the draft for both reasons before sending (T5) |
+| The out-of-scope list grew: **proactive messages to merchants** (WON'T 8) | A's idea for merchants who ask again, "that's no longer support" (T8) |
 
-The success criterion did not move: users do not set the threshold.
+The success criterion did not move, neither after the interviews nor after the test: users do not set the threshold.
 
 ## 10. What they could not decide
 - **The threshold** (38 % of handling time saved, ≤ 0.5 % wrong transactions): it is the flip point of `02_investment_memo.md`; the timed test on the eval-set decides it.
@@ -101,3 +107,4 @@ The success criterion did not move: users do not set the threshold.
 - **How many tickets carry an exact reference**, so how far the rule goes before the model is needed: the users only say "not always" (#1, #3); measured on 200 real ticket forms, not asked.
 - **What a reply may say about Ledgerly's own mistakes**: agents keep replies generic and do not admit errors (#13). The Head of Support decides with Legal; until then the draft states only what the ledger shows and never invents a cause.
 - **The legal basis for payer data and the LLM sub-processor**: the DPO decides (governance.md).
+- **How to show the confidence of a match**: B wanted "a percentage, or a level" next to "confident match"; A relied on the evidence lines (T3). A percentage is only honest if the score is calibrated, so the eval-set run decides, not the users.

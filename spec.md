@@ -26,7 +26,7 @@ flag     : {type: bank_change | contract | terms | fees, status: open, since, no
 match    : {status: confident | no_confident_match, transaction_id?, amount, currency, received_at, payer,
             evidence: [{field, ticket_value, ledger_value}], ruled_out: [{transaction_id, reason}], confidence,
             ask_merchant?: [reference | customer | date | time]}
-position : {stage: payer_bank | ledgerly | merchant_bank | paid_out, payout_id?, error_code?, next_step}
+position : {stage: payer_bank | ledgerly | merchant_bank | paid_out, payout_id?, payout_items?: [transaction_id, amount], error_code?, next_step}
 draft    : {text, references: [transaction_id, payout_id?], clause_id?, policy: pass | block, block_reason?}
 log      : {ticket_id, match, draft, edits, sent_by, sent_at}
 ```
@@ -36,6 +36,9 @@ log      : {ticket_id, match, draft, edits, sent_by, sent_at}
 - open account flag (bank change in progress, contract ended, terms not accepted) → show the flag first; a bank change with money already sent → hand to a referent, no draft saying the money will arrive
 - form fields missing or incomplete (they are optional), payment too recent to appear in the form, or free message → extract the clues from the text, then the same lookup; still no confident match → `ask_merchant`
 - the fields the merchant typed do not match the ledger (wrong reference, different amount) → no exact match; rank on the other clues and show the agent which field does not match
+- an evidence line the ledger rows do not support (e.g. "only payment from this payer in the last 30 days" when an older one exists) → the line is never shown; every evidence line is computed from the ledger, and candidates from the same payer are always listed open in `ruled_out`
+- the payment was paid out in a grouped transfer → `payout_items` lists every payment in the transfer
+- the account history holds the cause (a merchant setting changed, the same question already asked) or the merchant states an urgency → the draft gives the cause and answers the urgency, citing only what the ledger and the history show
 - refund, chargeback or dispute → "human decision only" banner; the draft may ask for documents but promises no outcome
 - non-EUR payment → show the converted amount and the rate
 - personal data of the payer (decline reason, IBAN) → never quoted in the draft; IBANs masked
@@ -46,6 +49,7 @@ log      : {ticket_id, match, draft, edits, sent_by, sent_at}
 - confidence below [threshold — set on the eval-set, not tuned on it] → `no_confident_match`; the ticket works as today
 - policy block → show the reason to the agent, no draft
 - the copilot or one data source is down → the panel says so; the ticket works as today
+- the agent clicks "Check in the ledger" → the transaction opens in the ledger; the proposal stays as it was
 - the agent clicks "Not this one" → the draft is discarded; manual search
 - hand to a referent or to legal → the pre-read goes with the ticket
 - kill switch → the Head of Support turns drafts off for everyone
@@ -55,9 +59,10 @@ log      : {ticket_id, match, draft, edits, sent_by, sent_at}
 - a proposed match on at least 70 % of tickets, with match precision of at least 98 % (hypothesis 1 of `01_problem_statement.md`)
 - zero drafts that promise a refund, a chargeback or a dispute outcome on the adversarial cases
 - zero cases where another merchant's data appears
+- zero evidence lines that the ledger does not support
 
 ## out_of_scope
-The WON'T column of the MoSCoW board: auto-send · automatic refunds, chargebacks or fee waivers · any chat or bot that talks to merchants · tickets spanning several merchant accounts · fine-tuning on merchant or payer data · languages other than French and English · "how do I" questions answered from the documentation.
+The WON'T column of the MoSCoW board: auto-send · automatic refunds, chargebacks or fee waivers · any chat or bot that talks to merchants · tickets spanning several merchant accounts · fine-tuning on merchant or payer data · languages other than French and English · "how do I" questions answered from the documentation · proactive messages to merchants.
 
 ## eval_set
-`evals/eval_set_v0.csv` — 20 invented cases now, 50 with Assignment 4, 200 by Session 5. Inputs generated with Claude; every label checked by hand by the team before any run.
+`evals/eval_set_v0.csv` — 20 invented cases now, 50 with Assignment 4, 200 by Session 5. Inputs generated with Claude; every label checked by hand by the team before any run. Recipe, prompt, labelling rule and FAIL conditions: `evals/README_eval_set.md`.
