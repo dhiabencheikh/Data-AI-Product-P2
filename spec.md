@@ -24,16 +24,18 @@ Steps with inputs and outputs, and the trust level of each step.
 ticket   : {id, merchant_id, channel: form | free_message, fields: {reference?, amount?, currency?, date?, customer?}, text, received_at}
 flag     : {type: bank_change | contract | terms | fees, status: open, since, note}
 match    : {status: confident | no_confident_match, transaction_id?, amount, currency, received_at, payer,
-            evidence: [{field, ticket_value, ledger_value}], ruled_out: [{transaction_id, reason}], confidence}
+            evidence: [{field, ticket_value, ledger_value}], ruled_out: [{transaction_id, reason}], confidence,
+            ask_merchant?: [reference | customer | date | time]}
 position : {stage: payer_bank | ledgerly | merchant_bank | paid_out, payout_id?, error_code?, next_step}
 draft    : {text, references: [transaction_id, payout_id?], clause_id?, policy: pass | block, block_reason?}
 log      : {ticket_id, match, draft, edits, sent_by, sent_at}
 ```
 
 ## edge_cases
-- several payments fit (same amount, same payer name) → `no_confident_match`, list the candidates, no draft
+- several payments fit (same amount, same payer name, "last week's payment" with three candidates) → `no_confident_match`, list the candidates, suggest the question to ask the merchant (`ask_merchant`), no draft
 - open account flag (bank change in progress, contract ended, terms not accepted) → show the flag first; a bank change with money already sent → hand to a referent, no draft saying the money will arrive
-- payment too recent for the form's drop-down list, or free message → extract the clues from the text, then the same lookup
+- form fields missing or incomplete (they are optional), payment too recent to appear in the form, or free message → extract the clues from the text, then the same lookup; still no confident match → `ask_merchant`
+- the fields the merchant typed do not match the ledger (wrong reference, different amount) → no exact match; rank on the other clues and show the agent which field does not match
 - refund, chargeback or dispute → "human decision only" banner; the draft may ask for documents but promises no outcome
 - non-EUR payment → show the converted amount and the rate
 - personal data of the payer (decline reason, IBAN) → never quoted in the draft; IBANs masked

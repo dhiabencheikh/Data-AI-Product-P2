@@ -5,7 +5,7 @@
 ## The nine classic blocks
 | Block | Our answer | Comes from |
 |---|---|---|
-| 1. Problem — top 3 pains | 40 % of handling time spent reading before answering · finding where a payment is stuck means opening tools that do not talk to each other · every number is checked by hand before sending | 01 · 03_user_research.md |
+| 1. Problem — top 3 pains | 40 % of handling time spent reading before answering · working out which payment the merchant means (the form's fields are optional and often incomplete) and where it is stuck, across tools that do not talk to each other · every number is checked by hand before sending | 01 · 03_user_research.md |
 | 2. Users / customer segments | About 18 tier-1 agents like Inès (user) · Ledgerly's 800 merchants (who get the answer) | 01 (persona) |
 | 3. Unique value proposition — one sentence | The account is already read when the agent opens the ticket: the payment the merchant means, with its evidence, and a draft the agent checks and sends | 01 (press release) |
 | 4. Solution — the MUST features | The transaction and where it is stuck, with evidence, or "no confident match" · account summary, open flags first · draft reply with references filled in from the ledger · policy guard (never promise a refund or a chargeback) | 03 brief §3 |
@@ -19,7 +19,7 @@
 | Block | Our answer | Comes from |
 |---|---|---|
 | 10. Data — sources, rights, gaps | Tickets, ledger, payouts, CRM, policy knowledge base · merchant contract (GDPR art. 6), payer data and LLM sub-processor to check with the DPO · gaps: disputes, large merchants, open account flags, offers and cashback, non-EUR, languages other than French and English | governance.md (Session 3 section) |
-| 11. Model — rung per part | Exact lookup from the form's fields and the payment's position in the chain: rules · clue extraction from free text: pretrained model · ranking and abstention: classical ML · summary and draft: pretrained model with merchant-scoped retrieval · policy guard: rules · overall: hybrid | 03 brief §5 |
+| 11. Model — rung per part | Exact lookup when the form's fields are filled in, and the payment's position in the chain: rules · clue extraction from free text and incomplete forms: pretrained model · ranking and abstention: classical ML · summary and draft: pretrained model with merchant-scoped retrieval · policy guard: rules · overall: hybrid | 03 brief §5 |
 | 12. Evaluation — the eval-set and its size | `evals/eval_set_v0.csv`: 20 invented, hand-labelled cases now, 200 by Session 5; two graders per case | evals/ |
 | 13. Human in the loop — trust level per step, way back to a person | L4 reading · L2 match and draft · L1 summary and clause · person only for send and money · way back: "no confident match" and "Not this one" open the ticket as today | 03 brief §2 |
 | 14. Risks & governance — what it must never do, rollback trigger | Never sends to the merchant, never moves money or promises a refund, never shows a match without its evidence · rollback: > 0.5 % wrong transactions in sent replies in a week, or any cross-merchant data → drafts off for everyone the same day | governance.md |

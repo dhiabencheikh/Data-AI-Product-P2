@@ -6,7 +6,7 @@
 
 ## 1. Problem, user, do-nothing  *(from 01)*
 - **Problem in one sentence (with a number):** tier-1 agents spend 40 % *(m)* of their handling time reading transaction history and past tickets before they can answer any of the 12,000 tickets a month *(m)*, about €576k a year of support cost *(derived)*.
-- **User (persona):** Inès, tier-1 support agent at Ledgerly (invented persona), about 32 tickets a day *(a)* — goal: answer each merchant right the first time — pain: on every ticket she rebuilds the account story by hand across four tools (CRM, ledger, payouts, past tickets) to find where the payment the merchant means is stuck. New agents lose the most: high turnover, an outdated manual, and experienced agents who spend time helping them.
+- **User (persona):** Inès, tier-1 support agent at Ledgerly (invented persona), about 32 tickets a day *(a)* — goal: answer each merchant right the first time — pain: on every ticket she rebuilds the account story by hand across four tools (CRM, ledger, payouts, past tickets) to work out which payment the merchant means (the contact form's fields are optional and often incomplete) and where it is stuck. New agents lose the most: high turnover, an outdated manual, and experienced agents who spend time helping them.
 - **Do-nothing baseline:** volume grows about 20 % *(g)*, agents get about 5 % faster on their own *(a)*: the reading cost goes from €576k to about €657k a year. The copilot must beat that trajectory, and the unified account view (non-AI, €180k a year *(g)*), not zero.
 
 ## 2. The process — as-is and to-be
@@ -57,9 +57,9 @@ Ledgerly's own systems: tickets and replies, the ledger, payouts, the CRM accoun
 ## 5. Model — one rung per part
 | Part | Rung (1 rules · 2 classical ML · 3 pretrained model · 4 hybrid) | Why the rung below fails |
 |---|---|---|
-| Lookup from the contact form's fields (reference, amount, date, customer) — most tickets, according to the users; share to measure on 200 tickets | 1 · rules | Bottom rung: an exact lookup is enough, and it is explainable |
+| Lookup from the contact form's fields (reference, amount, date, customer) — only when the merchant filled them in: the fields are optional and often incomplete, according to the users; share to measure on 200 tickets | 1 · rules | Bottom rung: when the fields are complete, an exact lookup is enough, and it is explainable |
 | Read where the payment is stuck: payer's bank → Ledgerly → merchant's bank, with the error code if any | 1 · rules | Bottom rung: each system reports a status or an error code; the rule reads them in order |
-| Extract the clues from free text (free-message channel, very recent payments typed by hand: "twelve hundred", "last Tuesday") | 3 · pretrained model | Rules catch IDs and formatted amounts, not loose wording; classical ML would need labelled tickets we do not have |
+| Extract the clues from free text (incomplete forms, free-message channel, very recent payments typed by hand: "twelve hundred", "last Tuesday", "last week's payment") | 3 · pretrained model | Rules catch IDs and formatted amounts, not loose wording; classical ML would need labelled tickets we do not have |
 | Rank the candidate transactions and decide to abstain | 2 · classical ML (score on amount, date and name gaps, with a threshold) | Rules can filter candidates but cannot rank near-ties or give a confidence to abstain on |
 | Summarise the account history and past tickets | 3 · pretrained model + retrieval, scoped to the merchant | Rules can list the last tickets, not say which ones matter for this question |
 | Draft the reply | 3 · pretrained model, starting from the team's stock phrases, grounded on the matched transaction and the policy clause; references filled in from the ledger, never retyped | One template per status covers a single question; merchants mix questions and write loosely. The templates stay as the fallback |
@@ -85,7 +85,7 @@ The 38 % and the 0.5 % are the flip point of `02_investment_memo.md`. It assumes
 | Change | Evidence (who said / did what) |
 |---|---|
 | Step 2 is about **where the payment is stuck**, not only which payment it is: the panel shows the payment's position from the payer's bank to the merchant's bank, with the error code if any | A: the longest part is finding "where in the flow the payment got stuck", across tools that "don't really talk to each other" (#4); B: searching across the tools is the longest part (#5) |
-| The **exact-lookup rule** becomes the main path; the model only reads free text (free-message channel, very recent payments typed by hand) | The contact form already asks for the reference, the amount and the customer (A, #1); C picks the transaction from a drop-down list and cannot send an incomplete form (#2); B: "the amount, the transaction reference, and there you go" (#3) |
+| The **exact-lookup rule runs first, but it is not the main path**: the contact form's fields are optional and often incomplete, so clue extraction, ranking and "no confident match" stay at the core. On "no confident match", the panel suggests the question to ask the merchant (reference, customer name, time of payment) | The fields exist but are often incomplete, and agents contact the merchant again (A, #1); C can send a ticket without them, and a missing field means one more exchange and a restart (#2); B: "the customer talks about last week's transaction, and he has three" (#3); the company keeps the fields optional on purpose (B, #16) |
 | The account summary shows **open flags first** (bank change in progress, contract not renewed, terms not accepted) | A's last error: she missed a "warning: information being updated" note on a bank change and the payment went to the old bank (#6) |
 | The draft **fills in references from the ledger**, never retyped, and starts from the team's stock phrases | B checks for about 5 min per ticket that she "didn't get the number wrong" and must not "copy the line below" (#7); A and B copy-paste the same phrases (#8) |
 | The way back gains **"hand to a referent or to legal, with the pre-read attached"** | A escalates to a referent and to legal for contract questions; B passes the ticket up when she cannot find the payment (#9) |
@@ -98,6 +98,6 @@ The success criterion did not move: users do not set the threshold.
 ## 10. What they could not decide
 - **The threshold** (38 % of handling time saved, ≤ 0.5 % wrong transactions): it is the flip point of `02_investment_memo.md`; the timed test on the eval-set decides it.
 - **Whether the copilot is right often enough** (match precision, coverage): the 200-ticket eval-set decides, not opinions.
-- **How many tickets carry an exact reference**, so how far the rule goes before the model is needed: measured on 200 real ticket forms, not asked.
+- **How many tickets carry an exact reference**, so how far the rule goes before the model is needed: the users only say "not always" (#1, #3); measured on 200 real ticket forms, not asked.
 - **What a reply may say about Ledgerly's own mistakes**: agents keep replies generic and do not admit errors (#13). The Head of Support decides with Legal; until then the draft states only what the ledger shows and never invents a cause.
 - **The legal basis for payer data and the LLM sub-processor**: the DPO decides (governance.md).
