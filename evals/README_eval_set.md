@@ -35,6 +35,8 @@ Also, read thes files to guide you from the repo, please mind inconsistencies yo
 Mind to be exhaustive and cover different situation a user can find. Read the pdf files to generate ticket relevant from interviews.
 ```
 
+(Comment added : the colomn not labelled by hand was already specified in the instructions enclosed of the assignment and in the repo files so no need to write it again in this prompt. It was besides added in a later commit)
+
 ## Labelling rule
 **"The transaction a careful agent would confirm from the ledger, or *no confident match*."** Two graders per case; when they disagree, they discuss, and if they still disagree the case is rewritten or dropped.
 
