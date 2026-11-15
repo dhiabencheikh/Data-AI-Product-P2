@@ -1,4 +1,4 @@
-# spec.md — executable spec · Ledgerly agent-assist copilot · skeleton v0
+# spec.md — executable spec · Ledgerly agent-assist copilot · v2 (Session 4)
 
 > Session 3 skeleton, completed in Session 4. Same content as `03_product_brief.md` v2, with nothing left vague: inputs, outputs, edge cases, fallbacks, done.
 
@@ -63,6 +63,12 @@ log      : {ticket_id, match, draft, edits, sent_by, sent_at}
 
 ## out_of_scope
 The WON'T column of the MoSCoW board: auto-send · automatic refunds, chargebacks or fee waivers · any chat or bot that talks to merchants · tickets spanning several merchant accounts · fine-tuning on merchant or payer data · languages other than French and English · "how do I" questions answered from the documentation · proactive messages to merchants.
+
+## v2_changes (added after evals/report_v0.md)
+Every top miss from `evals/report_v0.md` converted into an explicit specification rule:
+- **[CHANGE-1 · Lookup & Disambiguation — fixes `L-07`, `L-28`]:** When a merchant provides an approximate amount (e.g., "around 300 euros", "environ 450 euros") and multiple ledger candidates exist, `match` must rank candidates by `(payer_name_similarity + date_proximity)` before triggering `no_confident_match`. Only escalate when two candidates match both payer and date (e.g., `L-10`, `L-31`).
+- **[CHANGE-2 · Refund Reference Extraction — fixes `L-14`, `L-36`]:** The `read` and `match` steps must extract `RF-\d+` refund references in addition to `TX-\d+` payment references, and query the refund settlement log (`3–5 working days` bank delay) without triggering the human-only new-refund block.
+- **[CHANGE-3 · Noisy Text & Field-Mismatch Resilience — fixes `L-15`, `L-32`, `L-37`]:** Lower the routing escalation threshold from `0.70` to `0.62` when a valid `TX-\d+` or `M-\d+` identifier is present and no high-risk keyword (`refund`, `dispute`, `chargeback`, `waive`, `bank details change`) appears. When a form `TX-` reference does not match the ledger (`L-32`), fall back to `(merchant_id + amount + date + payer)` lookup and flag the mismatched reference to the agent.
 
 ## eval_set
 `evals/eval_set_v0.csv` — 20 invented cases now, 50 with Assignment 4, 200 by Session 5. Inputs generated with Claude; every label checked by hand by the team before any run. Recipe, prompt, labelling rule and FAIL conditions: `evals/README_eval_set.md`.
