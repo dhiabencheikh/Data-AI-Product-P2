@@ -43,6 +43,27 @@
 | 5. Write the reply | L2 — the agent edits and approves every draft | A sent error reaches the merchant; a draft that a person reads does not |
 | 6. Send, move money, log | Person only (send, refund, chargeback) · L4 for the log | Sending and money are the two things the copilot must never do |
 ## Session 4 — human-in-the-loop points and the override switch (to come)
+
+---
+
+## Session 4 · Human Checkpoints, Override Switch & Eval Data Governance
+
+### 1. Human Checkpoints (⊘)
+Every point in the Ledgerly copilot workflow where human oversight is enforced by design (never left to model self-confidence)[cite: 30, 39]:
+- **Checkpoint 1 — Routing & Risk Abstention (`⊘ Abstention` in `routing_rule.py`):** Mandatory hand-off to a human specialist or referent whenever a ticket involves a refund request, chargeback/dispute, fee waiver, ended contract, cent-level reconciliation hold, bank-details change with funds already sent, multi-account query, or routing confidence `< 0.70`. *Owner:* Tier-1 Support Queue Lead (SLA: standard queue priority, < 4 business hours)[cite: 30].
+- **Checkpoint 2 — Ambiguity / Missing-Match Abstention (`⊘ Abstention` in `drafter.py`):** When 0 or >1 transactions match within the merchant's isolated ledger, the system outputs `NO_DRAFT` and leaves investigation to the human agent. *Owner:* Assigned Tier-1 Support Agent (SLA: immediate at ticket open)[cite: 30].
+- **Checkpoint 3 — Pre-Send Draft Review (`⊘ Approval` in Agent UI):** Every generated draft is strictly L2 ("copilot that drafts, never sends"). A Tier-1 agent must verify the cited `TX-`/`VO-` references against the ledger panel, edit if needed, and click Approve & Send. *Owner:* Assigned Tier-1 Support Agent (SLA: before any external merchant communication)[cite: 30].
+- **Checkpoint 4 — Post-Launch Quality & Isolation Audit (`⊘ Sampling`):** Weekly manual audit of 5 % of approved replies and 100 % of policy-blocked drafts to verify zero cross-merchant data leakage and zero unauthorized financial promises. *Owner:* Support QA Lead & Data Protection Officer (SLA: weekly review every Friday)[cite: 30].
+
+### 2. Override Switch (⏻)
+- **Owner:** Head of Support (operational authority) and On-Call Tech Lead (technical execution)[cite: 30, 40].
+- **Mechanism & Scope:** Single configuration flag (`COPILOT_DRAFTS_ENABLED = False`) that immediately disables draft generation and policy-bypass paths across all 800 merchant queues, dropping the system to L1 read-only mode (agents handle tickets manually as before)[cite: 30, 40].
+- **Verification:** Tested on 15 November 2026 on the `/prototype` pipeline; toggling the switch routes 100 % of incoming tickets to `escalate` with zero drafts generated[cite: 40].
+
+### 3. Evaluation Data Storage & Access Control
+- **Location:** Stored in `evals/eval_set_v0.csv` (50 pre-labelled cases) in the team Git repository (`Data-AI-Product-P2`)[cite: 39, 41].
+- **Privacy & Anonymisation:** Contains 100 % synthetic/invented merchant IDs (`M-xxxx`), transaction IDs (`TX-xxxxx`), and masked IBANs (`•• xxxx`); zero real production customer or payer PII is present[cite: 39, 40].
+- **Access & Anti-Contamination Rule:** Visible to Team Ledgerly members and course evaluators. Strictly separated from `TRAINING_DATA` in `prototype/router.py`; team members are prohibited from tuning prompts or thresholds against individual eval rows[cite: 39, 40].
 ## Session 5 — counter-metrics and the segments we report (to come)
 ## Session 6 — protected segments and the harm threshold that stops an experiment (to come)
 ## Session 7 — accountable owner, rollback authority, incident path (to come)
