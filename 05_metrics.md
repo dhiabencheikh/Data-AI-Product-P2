@@ -19,7 +19,7 @@
 - **Cost of the next point (weeks, tokens, labelling, latency):** `€5,000` per model re-evaluation change (`02_sizing.xlsx` Inputs), `€30,000 / year` eval upkeep, plus engineering sprint weeks that delay the next-best project (unified account view, `€180,000 / year` hurdle in `02_sizing.xlsx`).
 - **What is a floor, not a stop (any miss blocks the release):** `0` drafts promising a refund, chargeback, or dispute outcome (`0 / 50` in `evals/report_v0.md`); `0` cross-merchant data leaks (`governance.md`); and `0` evidence lines unsupported by the ledger (`spec.md` / `03_user_research.md` T1). Any single miss blocks the release.
 
-- ## 3 · Choose what to protect — the hierarchy, by segment
+## 3 · Choose what to protect — the hierarchy, by segment
 | Kind | Metric | Numerator / denominator | Level | Lag | Source & owner |
 |---|---|---|---|---|---|
 | Primary (1) | First-contact resolution rate without 7-day reopening on copilot-assisted tickets | Assisted tickets closed and not reopened within 7 days / Total tickets where copilot proposed a match and draft | Level 4 (Product) | 7 days | Ticketing logs · Product Manager |
@@ -42,7 +42,7 @@
   - *Gaming risk:* Optimising **draft acceptance ("sendable as is")** alone (`60.6 %` in `report_v0.md`) could cause the drafter to write generic, reassuring replies that agents accept quickly without checking the ledger, or cause agents to rubber-stamp drafts to hit their 32 tickets/day pace (`02_sizing.xlsx`).
   - *The repair:* We pair draft acceptance with **7-day reopen rate** (Counter-metric 1) and a mandatory **"Check in the ledger"** button (`03_user_research.md` T2) plus weekly 5 % human QA sampling of approved replies (`governance.md` Session 4).
 
-  ## 4 · Derive the business metrics — three, with expected effects (the oral)
+## 4 · Derive the business metrics — three, with expected effects (the oral)
 | Business metric | Baseline (from `02_sizing.xlsx`) | Expected effect (from `evals/report_v0.md` × the cost line) | Lag | Read date | It is a hypothesis about… |
 |---|---|---|---|---|---|
 | 1. All-in cost per resolved `Transaction & payout status` ticket | `€10.00` all-in (`€5.63` direct agent time; `02_sizing.xlsx` Inputs) | `€10.00 → €8.00` at current `66.7 %` match coverage (`evals/report_v0.md`) × `30 %` time saved (`02_sizing.xlsx` base); `€10.00 → €7.60` once `v2_changes` lift coverage to `80 %` (`02_sizing.xlsx` base), plus `€0.072` AI token/retry cost per draft (`€0.06 × 1.20`) | 1 month (monthly finance & volume close) | End of Month 2 of the A/B rollout | Lookup coverage + draft acceptance → handling time saved → unit cost reduction (two arrows) |
