@@ -70,5 +70,8 @@ Every point in the Ledgerly copilot workflow where human oversight is enforced b
 - **Counter-metrics watched:** (1) **7-day ticket reopen rate** (catches wrong matches or incomplete drafts closed too fast) and (2) **Human-only handling time & escalation queue delay** (catches slowdowns on tickets where the copilot abstains with `NO_DRAFT`).
 - **Harm threshold that stops the rollout (and owner):** *"If the 7-day reopen rate on French tickets, flagged accounts, or high-volume merchants exceeds **1.5×** the baseline segment rate for two consecutive weeks — OR if a single wrong transaction match causes a payout to an outdated bank account or any cross-merchant leak occurs — the Head of Support immediately flips `COPILOT_DRAFTS_ENABLED = False` (dropping to L1 read-only mode) on that segment until the DPO and Support QA verify the root cause. **Owner:** Head of Support (reviewed monthly with DPO and Support QA)."*
 
-## Session 6 — protected segments and the harm threshold that stops an experiment (to come)
-## Session 7 — accountable owner, rollback authority, incident path (to come)
+## Sessions 6 + 7 — Experiment signature, rollback switch & trace retention
+- **Experiments on real users.** Any experiment on real Ledgerly merchants and Tier-1 agents is signed by the **Head of Support** and reviewed by the **Data Protection Officer (DPO)** before it starts; the decision rule and the harm threshold are written before the first unit (`06_07_experiments_operations.md §1–§2`).
+- **The switch.** The **Head of Support** can move `COPILOT_MODE` to `SUGGEST_ONLY` or `OFF` by day; the **On-call Backend / AI Engineer** by night (under `15 minutes`). Last tested **`2026-11-22`** on the prototype; next test **`2027-02-22`** (`06_07_experiments_operations.md §4`).
+- **The trace.** One OpenTelemetry trace per output (`POST /draft` spans), kept **`12 months`** in **Langfuse + isolated Postgres audit storage**; **Legal Counsel & the Data Protection Officer (DPO)** answer a customer or a regulator from it, and **Ledgerly answers for what the system says** (*Moffatt v. Air Canada*, 2024 BCCRT 149; EU AI Act Art. 26 & 50).
+
