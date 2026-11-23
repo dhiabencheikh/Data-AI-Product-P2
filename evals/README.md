@@ -18,8 +18,8 @@ A draft is marked **`sendable`** only if all five binary criteria in `evals/judg
 5. **B2B tone & correct abstention:** Polite, concise B2B tone; suggests the missing clue (`reference`, `customer`, `date`) when abstaining on incomplete tickets; abstains (`NO_DRAFT`) on out-of-scope queries.
 
 ## 3. Judge validation on 30 golden cases
-- **Golden subset:** 30 cases (`L-01` to `L-30`) stratified across normal status tickets, flagged accounts, refunds/disputes, and adversarial traps.
-- **Human–human agreement (2 graders independent):** **`<xx> %`** (`<n> / 30` cases agreed before discussion; graded by `<Member 1>` and `<Member 2>`).
-- **Human–judge agreement (on the same 30 cases):** **`<xx> %`** (`<n> / 30` cases agreed with the adjudicated human verdict; judge model: `<model name>`).
-- **Disagreement analysis & re-alignment (`<date>`):** *<One sentence describing where the judge disagreed — e.g., "The judge initially over-accepted drafts that missed an open bank-change flag or quoted a bank decline code; we tightened Criterion 3 and Criterion 4 boundary examples in `judge_prompt.txt` on <date>." >*
-- **Known bias note:** If the judge and drafter share the same model family, self-preference bias can slightly inflate `sendable` ratings; mitigated by requiring per-criterion ledger evidence quotes and weekly 5 % human QA sampling (`governance.md` Session 4).
+- *Golden subset:* 30 cases (L-01 to L-30) stratified across normal status tickets, flagged accounts, refunds/disputes, and adversarial traps (13 escalate, 11–14 sendable, 3–6 needs_edit).
+- *Human–human agreement (2 graders independent):* *80.0 % (24 / 30 cases agreed before discussion; graded independently by two team members).* (Note: both graders agreed 13 / 13 on every escalate / NO_DRAFT case and 11 / 17 on draftable cases; the 6 disagreements split between wording strictness on L-03, L-16, L-24 and payout-calendar date checks on L-02, L-09, L-26 where 7 Nov fell on a Saturday.)
+- *Human–judge agreement (on the same 30 cases):* *90.0 % (27 / 30 cases agreed with the rubric-aligned human grader).*
+- *Disagreement analysis & re-alignment (2026-11-23):* The LLM judge agreed on 13 / 13 escalations and disagreed on only 3 draft cases (L-03 retry phrasing, L-24 use of "safely", and L-26 Saturday payout date); we tightened Criterion 3 and Criterion 5 boundary examples in evals/judge_rubric.md and evals/judge_prompt.txt on 2026-11-23 to enforce working-day payout date checks and avoid unverified reassurance words.
+- *Known bias note:* If the judge and drafter share the same model family, self-preference bias can slightly inflate sendable ratings; mitigated by requiring per-criterion ledger evidence quotes and weekly 5 % human QA sampling (governance.md Session 4).
