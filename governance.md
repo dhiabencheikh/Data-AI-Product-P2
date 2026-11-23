@@ -64,6 +64,11 @@ Every point in the Ledgerly copilot workflow where human oversight is enforced b
 - **Location:** Stored in `evals/eval_set_v0.csv` (50 pre-labelled cases) in the team Git repository (`Data-AI-Product-P2`)[cite: 39, 41].
 - **Privacy & Anonymisation:** Contains 100 % synthetic/invented merchant IDs (`M-xxxx`), transaction IDs (`TX-xxxxx`), and masked IBANs (`•• xxxx`); zero real production customer or payer PII is present[cite: 39, 40].
 - **Access & Anti-Contamination Rule:** Visible to Team Ledgerly members and course evaluators. Strictly separated from `TRAINING_DATA` in `prototype/router.py`; team members are prohibited from tuning prompts or thresholds against individual eval rows[cite: 39, 40].
-## Session 5 — counter-metrics and the segments we report (to come)
+
+## Session 5 — counter-metrics and the segments we report
+- **Segments reported:** (1) Ticket category (`Transaction & payout status` 50 %, `Refunds, disputes & chargebacks` 30 %, `Account & other` 20 % — from `02_sizing.xlsx`), (2) Language (`French` vs `English`), (3) Account state (`open flag: bank_change / contract / terms` vs `clean account`), (4) Payment complexity (`standard EUR` vs `grouped transfer / cashback cent-difference / non-EUR`), and (5) Merchant size (`high-volume merchants with duplicate amounts` vs `standard merchants`).
+- **Counter-metrics watched:** (1) **7-day ticket reopen rate** (catches wrong matches or incomplete drafts closed too fast) and (2) **Human-only handling time & escalation queue delay** (catches slowdowns on tickets where the copilot abstains with `NO_DRAFT`).
+- **Harm threshold that stops the rollout (and owner):** *"If the 7-day reopen rate on French tickets, flagged accounts, or high-volume merchants exceeds **1.5×** the baseline segment rate for two consecutive weeks — OR if a single wrong transaction match causes a payout to an outdated bank account or any cross-merchant leak occurs — the Head of Support immediately flips `COPILOT_DRAFTS_ENABLED = False` (dropping to L1 read-only mode) on that segment until the DPO and Support QA verify the root cause. **Owner:** Head of Support (reviewed monthly with DPO and Support QA)."*
+
 ## Session 6 — protected segments and the harm threshold that stops an experiment (to come)
 ## Session 7 — accountable owner, rollback authority, incident path (to come)
