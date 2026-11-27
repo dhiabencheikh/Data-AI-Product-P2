@@ -52,7 +52,7 @@ Reach from `02_sizing.xlsx`: 12,000 tickets a month; 8,400 where the copilot pro
 - **The cut that hurt the most:** the audit log. We promised it to the auditor in `governance.md`, but the eval-set test does not need it; it becomes a MUST before the first live ticket.
 
 ## 4. Data  *(from the six-question audit — details in governance.md)*
-Ledgerly's own systems: tickets and replies, the ledger, payouts, the CRM account record, the policy knowledge base. 12,000 tickets a month *(m)*; no ticket is labelled with its transaction today, so the eval-set is invented and labelled by hand (20 cases now, 200 by Session 5). Coverage gaps to check: disputes, large merchants with many similar amounts, non-EUR payments, languages other than French and English. Legal basis: the merchant contract (GDPR art. 6); payer names and IBANs make the processor question and the LLM sub-processor open points for the DPO. Leakage: every query is filtered by the ticket's merchant ID. Freshness: the ledger changes by the minute, so the copilot reads live data, never a copy.
+Ledgerly's own systems: tickets and replies, the ledger, payouts, the CRM account record, the policy knowledge base. 12,000 tickets a month *(m)*; no ticket is labelled with its transaction today, so the eval-set is invented and labelled by hand (20 cases in Session 3, 50 in Session 4, 100 in Session 5: `evals/eval_set_v1.csv`). Coverage gaps to check: disputes, large merchants with many similar amounts, non-EUR payments, languages other than French and English. Legal basis: the merchant contract (GDPR art. 6); payer names and IBANs make the processor question and the LLM sub-processor open points for the DPO. Leakage: every query is filtered by the ticket's merchant ID. Freshness: the ledger changes by the minute, so the copilot reads live data, never a copy.
 
 ## 5. Model — one rung per part
 | Part | Rung (1 rules · 2 classical ML · 3 pretrained model · 4 hybrid) | Why the rung below fails |
@@ -73,6 +73,8 @@ A side panel inside the ticket view the agents already use, filled when the tick
 > By Session 5, on our 200-ticket eval-set, handling time falls by at least 38 % on the tickets where the copilot proposes a match (two graders handle each ticket, timed, with and without the copilot) — and no more than 0.5 % of those tickets end with a wrong transaction in the approved reply.
 
 The 38 % and the 0.5 % are the flip point of `02_investment_memo.md`. It assumes the copilot proposes a match on at least 70 % of tickets, as in the 02 base case.
+
+*Update, 27 November:* the eval-set has 100 cases (`evals/eval_set_v1.csv`, the Session 5 requirement). It measures the offline part of the criterion — 87.5 % coverage (≥ 70 %), 100 % match precision, 0 drafts that touch money or another merchant's data (`evals/reports/report_v1.md`). Timing people is not possible on an invented eval-set: the −38 % is measured with agents in the A/B (`06_07` §1–§2, `08_launch_memo.md`).
 
 ## 8. Risks and rollback trigger
 - Top risks: the agent trusts a wrong match and tells the merchant the wrong status or amount · a flag on the account record is missed (bank change in progress) and money goes to the old bank · a merchant's data appears in another merchant's ticket · a draft promises a refund or a chargeback · the copilot abstains too often and saves no time · time saved stays near the 30 % base case, below the flip point.
@@ -103,7 +105,7 @@ The success criterion did not move, neither after the interviews nor after the t
 
 ## 10. What they could not decide
 - **The threshold** (38 % of handling time saved, ≤ 0.5 % wrong transactions): it is the flip point of `02_investment_memo.md`; the timed test on the eval-set decides it.
-- **Whether the copilot is right often enough** (match precision, coverage): the 200-ticket eval-set decides, not opinions.
+- **Whether the copilot is right often enough** (match precision, coverage): the eval-set decides, not opinions (100 cases, `evals/reports/report_v1.md`).
 - **How many tickets carry an exact reference**, so how far the rule goes before the model is needed: the users only say "not always" (#1, #3); measured on 200 real ticket forms, not asked.
 - **What a reply may say about Ledgerly's own mistakes**: agents keep replies generic and do not admit errors (#13). The Head of Support decides with Legal; until then the draft states only what the ledger shows and never invents a cause.
 - **The legal basis for payer data and the LLM sub-processor**: the DPO decides (governance.md).

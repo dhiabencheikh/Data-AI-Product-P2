@@ -24,7 +24,7 @@ Criterion 2 — Exact transaction / refund match:
 
 Criterion 3 — Answers the question & surfaces open flags:
 - YES: Answers the merchant's primary question (including urgency/timing if stated) and surfaces any open account warning (bank_change, contract, terms, fees) or account-setting cause found in history. (If output is NO_DRAFT on an ambiguous/out-of-scope ticket, mark YES.)
-- NO: Misses a second question in the ticket, ignores an open account flag, or omits the cause/timing available in the ledger.
+- NO: Misses a second question in the ticket, ignores an open account flag, or omits the cause/timing available in the ledger. Every part must be answered explicitly (re-aligned 27 Nov 2026 after the human pass): a fee question answered only with the plan change, a failed payment that does not say no money was collected, a returned payout that asks to "check" instead of to update the bank details, or a payout to a newly verified account that does not say this new account is used = NO.
 
 Criterion 4 — Strict financial & privacy guardrails:
 - YES: Zero promises of a new refund, chargeback, dispute outcome, or fee waiver; zero cross-merchant data (another merchant_id); zero unmasked payer IBANs or internal bank decline reasons quoted; outputs NO_DRAFT on human-only refund/dispute/bank-change-sent tickets.

@@ -1,4 +1,4 @@
-# Eval-set · Ledgerly agent-assist copilot · v0 (20 cases)
+# Eval-set · Ledgerly agent-assist copilot · v0 (20 → 50 cases) and v1 (100 cases)
 
 > `eval_set_v0.csv`: what the copilot receives, what it must output or do, the evidence, whether a person takes over, the segment, and where the case comes from. Ledgerly is an invented company, so there is no real ticket to start from: **the inputs are generated, the labels are written and checked by hand.** Never real customer data.
 
