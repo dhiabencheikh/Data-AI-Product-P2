@@ -1,60 +1,56 @@
 import re
 
-# Rung 1: Deterministic routing rules (Ledgerly spec.md)
+# Step 2 · Routing rule (rung 1: deterministic rules from spec.md).
+# Decides whether the copilot may go on to the lookup and the draft, or hands the ticket to a person.
+
 CONFIDENCE_THRESHOLD = 0.70
-HUMAN_ONLY_CATEGORIES = {"refund", "dispute", "fee_waiver", "out_of_scope"}
-HIGH_RISK_KEYWORDS = [
-    r"bank details change in progress",
-    r"contract ended",
-    r"reconciliation difference",
-    r"rounding mismatch",
-    r"several merchant accounts",
+# spec.md v2, CHANGE-3: a lower gate when the ticket carries a valid reference and no risky word.
+CONFIDENCE_THRESHOLD_WITH_REFERENCE = 0.62
+DRAFTABLE_CATEGORIES = {"status", "refund_status", "account"}
+HIGH_RISK_WORDS = r"\b(refund|rembours\w*|dispute|chargeback|litige|contest\w*|waive|waiver|geste commercial)\b"
+
+# Account situations where a person must act (spec.md edge cases, governance.md Session 4).
+ACCOUNT_HOLDS = [
+    (r"contract ended", "Contract ended: hand to a referent or to legal."),
+    (r"bank details change in progress.*sent [^;]*to (?:the )?OLD account", "Bank change in progress and money already sent to the old account: hand to a referent."),
+    (r"on hold[^;]*(?:reconciliation|rounding)", "Payout held by a cent-level reconciliation difference: payments operations must release it."),
 ]
 
-def apply_routing_rule(route_result: dict, ticket_text: str) -> dict:
+
+def apply_routing_rule(route_result: dict, ticket: dict, clues: dict) -> dict:
     """
-    Decides whether the copilot proceeds to retrieval/drafting or hands over to a human.
-    Returns: {"action": "draft" | "escalate", "reason": str}
+    Return {"action": "draft" | "escalate", "reason": str}.
+    ticket and clues come from reader.split_ticket() and reader.extract_clues().
     """
-    category = route_result.get("category", "unknown")
-    confidence = route_result.get("confidence", 0.0)
-    text_lower = ticket_text.lower()
+    category = route_result["category"]
+    confidence = route_result["confidence"]
+    merchant_text = ticket["merchant_text"]
+    account_context = ticket["account_context"]
 
-    # 1. Out-of-scope or human-only categories never auto-draft
-    if category in HUMAN_ONLY_CATEGORIES:
-        return {
-            "action": "escalate",
-            "reason": f"Category '{category}' is designated human-only / out-of-scope.",
-        }
-
-    # 2. High-risk account flags or operational holds require human referent
-    for pattern in HIGH_RISK_KEYWORDS:
-        if re.search(pattern, text_lower):
-            return {
-                "action": "escalate",
-                "reason": f"High-risk flag or operational hold detected ({pattern}).",
-            }
-
-    # 3. Multiple merchant IDs in one ticket (out of scope per spec.md)
-    merchant_ids = set(re.findall(r"\bM-\d{4}\b", ticket_text))
+    # 1. Several merchant accounts in one ticket are out of scope.
+    merchant_ids = set(re.findall(r"\bM-\d{4}\b", merchant_text))
     if len(merchant_ids) > 1:
-        return {
-            "action": "escalate",
-            "reason": f"Multiple merchant accounts referenced: {sorted(merchant_ids)}.",
-        }
+        return {"action": "escalate", "reason": f"Several merchant accounts in one ticket: {sorted(merchant_ids)}."}
 
-    # 4. Confidence threshold check
-    if confidence < CONFIDENCE_THRESHOLD:
-        return {
-            "action": "escalate",
-            "reason": f"Routing confidence {confidence} below threshold {CONFIDENCE_THRESHOLD}.",
-        }
+    # 2. Without this merchant's account context there is nothing to look up.
+    if not ticket["merchant_id"]:
+        return {"action": "escalate", "reason": "No account context: nothing to look up (out of scope)."}
 
-    return {
-        "action": "draft",
-        "reason": "Passed routing gate (confident status/account_flag lookup).",
-    }
+    # 3. Refund requests, disputes, fee waivers and out-of-scope questions are person only.
+    if category not in DRAFTABLE_CATEGORIES:
+        return {"action": "escalate", "reason": f"Category '{category}' is person only."}
 
-if __name__ == "__main__":
-    print(apply_routing_rule({"category": "status", "confidence": 0.85}, "TX-90112 status"))
-    print(apply_routing_rule({"category": "refund", "confidence": 0.91}, "Please refund €45"))
+    # 4. Account situations that need a person, whatever the merchant asked.
+    for pattern, reason in ACCOUNT_HOLDS:
+        if re.search(pattern, account_context, flags=re.IGNORECASE):
+            return {"action": "escalate", "reason": reason}
+
+    # 5. Confidence gate (lower when a valid reference is present and no risky word appears).
+    has_reference = any(reference.startswith("TX-") for reference in clues["references"])
+    # A refund-status question names the refund by design, so the word is not a risk signal there.
+    risky = category != "refund_status" and bool(re.search(HIGH_RISK_WORDS, ticket["message"], flags=re.IGNORECASE))
+    threshold = CONFIDENCE_THRESHOLD_WITH_REFERENCE if has_reference and not risky else CONFIDENCE_THRESHOLD
+    if confidence < threshold:
+        return {"action": "escalate", "reason": f"Routing confidence {confidence} below threshold {threshold}."}
+
+    return {"action": "draft", "reason": f"Passed the routing gate ({category}, confidence {confidence})."}

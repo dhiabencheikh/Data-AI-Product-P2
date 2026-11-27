@@ -1,55 +1,46 @@
-# Launch Memo — Ledgerly Agent-Assist Copilot
+# Launch memo — Ledgerly agent-assist copilot — 27 November 2026
 
-**Date:** November 26, 2026  
-**Author(s):** Team Ledgerly  
-**Status:** Conditional Go  
+> One page. The decision on line one. Numbers, names, dates. Every number comes from `02_sizing.xlsx`, `evals/reports/report_v1.md`, `05_metrics.md` or `06_07_experiments_operations.md`.
 
----
+## 1 · Decision
+**Go** — to step 0 (shadow mode on live status tickets, 2 weeks), then step 1 (internal agents, then 5 % of status tickets) and step 2 (A/B on 50 % of `Transaction & payout status` tickets, 4 weeks), from **4 January 2027**. The next decision — ship, iterate or kill — is read on **1 March 2027** by the **Head of Support** and the **Product Manager**. Full rollout only if the A/B shows the **38 %** flip point of `02_investment_memo.md`.
 
-## 1. Executive Summary & Launch Decision
-- **Decision:** **Conditional Go** — Ready for phased A/B rollout once the three pre-launch gates are closed: (1) audit log enabled for live tickets, (2) `RF-\d+` lookup & approximate-amount tie-breaking deployed to lift proposed match coverage from `66.7 %` to `≥ 70 %`, and (3) DPO sign-off on payer data & LLM sub-processor (`governance.md`).
-- **Summary:** We are launching the **Ledgerly Agent-Assist Copilot** (L1/L2 hybrid side panel) for our 18 Tier-1 support agents handling ~12,000 tickets/month. It surfaces open account flags, identifies where a payment is stuck across the ledger/payouts/banks with computed evidence, and drafts grounded FR/EN replies—while keeping all money actions and final sends strictly human-only.
+**Why a go when 02 said no-go this year:** the 02 no-go was conditional — reopen the copilot if the prototype covers enough tickets, matches the right transaction and never touches money. The offline part is now met (87.5 % coverage, 100 % match precision, 0 forbidden outputs). The time saved can only be measured with agents on real tickets: the A/B is that measurement, and its kill rule protects the hurdle. The pilot's ledger, payout and ticket connectors are the ones the unified account view needs (02 §4), so the experiment does not delay the next-best project.
 
-## 2. Target Users & Rollout Plan
-- **Target Users:** Tier-1 support agents (approx. 32 tickets/day per agent), with highest expected impact for new agents.
-- **In-Scope:** `Transaction & payout status` tickets (50 % of volume) and eligible FR/EN tickets with a single merchant account.
-- **Out-of-Scope (Human-Only):** Refunds, chargebacks, fee waivers, "how do I" doc questions, multi-merchant tickets, non-FR/EN languages, and auto-send.
-- **Rollout Phases:**
-  - **Phase 1 (Weeks 1–2 — Pilot / 20 % A/B):** Enable for a subset of Tier-1 agents on `Transaction & payout status` tickets. Validate `p95` pre-read latency (`< 30 s`), 5 % weekly QA audit, and `0` policy/tenant leaks.
-  - **Phase 2 (Weeks 3–4 — 50 % A/B Test):** Expand to 50 % of eligible tickets. Measure 7-day reopen rate, handling time reduction (target `-30 %` base / `-38 %` flip point), and segment parity (FR vs EN, flagged accounts, high-volume merchants).
-  - **Phase 3 (Month 2+ — Full Rollout):** 100 % of eligible Tier-1 tickets if guardrails hold and unit cost tracks toward `€7.60–€8.00` per resolved status ticket (down from `€10.00`).
+**Budget we ask for:** **€145k a year**, the fixed costs of `02_sizing.xlsx` (+ ≈ €3.5k of tokens). It pays for the QA reviewer who supervises (€55k), the integration (€20k amortised), the evaluation and graders (€30k), monitoring and on-call (€20k) and re-evaluation at model changes (€20k).
 
-## 3. Success Metrics & Guardrails
-*(Aligned with `03_product_brief.md` and `05_metrics.md`)*
-- **Primary Product Metric:** First-contact resolution rate without 7-day reopening on copilot-assisted tickets; handling time reduction on matched tickets (`-30 %` base case to `≤ 9.8 min`; `-38 %` flip-point target to `≤ 8.7 min`).
-- **Business Metric:** All-in cost per resolved status ticket (`€10.00` baseline → `€8.00` at `66.7 %` coverage, `€7.60` at `80 %` coverage).
-- **AI / Model Targets:**
-  - Match precision: `≥ 98 %` (currently `100.0 %`, `22/22`)
-  - Proposed match coverage: `≥ 70 %` (currently `66.7 %`, `22/33`)
-  - Router accuracy: `≥ 90 %` stop criterion (currently `86.0 %`, `43/50`)
-- **Guardrail Metrics & Rollback Triggers (Owner: Head of Support):**
-  - **Wrong-transaction match rate:** `> 0.5 %` of sent replies in a week (status) or `> 0.8 %` (refunds/disputes).
-  - **Cross-merchant data leak:** Any single occurrence (`0` tolerance).
-  - **Unauthorized money promise:** Any draft promising a refund, chargeback, or fee waiver (`0` tolerance).
-  - **Segment harm / reopen rate:** 7-day reopen rate on French tickets, flagged accounts, or high-volume merchants exceeds **`1.5×`** the baseline segment rate for two consecutive weeks.
-  - **Action:** Head of Support immediately flips `COPILOT_DRAFTS_ENABLED = False` (dropping to L1 read-only mode) the same day until DPO and Support QA verify the root cause.
+## 2 · Evidence
+- **Eval v1** (100 cases; two graders on the golden 30, judge validated — agreement **90 %** human–human / **86.7 %** human–judge): coverage **49 / 56 = 87.5 %**, match precision **47 / 47 = 100 %**, **9 / 17** golden drafts sendable as is for the humans (52.9 %; the judge, which over-accepts, says 46 / 56 on all 100), against the criterion **"a proposed match on ≥ 70 % of draftable tickets with ≥ 98 % precision, and 0 drafts that promise money or show another merchant's data"** (`spec.md`, `evals/reports/report_v1.md`). French and English: 87.5 % coverage each.
+- **Guardrails:** **0** drafts on the 44 person-only tickets, **0 / 5** cross-merchant isolation traps, **0** bank codes or IBANs; checked at every change (eval re-run) and on a 5 % weekly sample of approved replies. 2 drafts add a sentence the ledger does not support (L-07, L-61): fixed and re-run before step 1.
+- **What the A/B will prove:** handling time on covered status tickets from **14 min** to **≤ 8.7 min (−38 %)**, without the 7-day reopen rate leaving ±1.5 pts of control in any pre-registered segment; ≈ **2,770 status tickets per arm** in 4 weeks (`~1,385` a week, `02_sizing.xlsx`; the per-arm minimum was not computed, optional); **4 weeks** because the 7-day reopen rate is the slowest guardrail (`06_07` §2).
+- **Sizing:** base year 1 **−€36.6k** vs hurdle **€180k** (unified account view); EV **−€34.0k**; do-nothing trajectory **€72k** a year. At full adoption, 38 % saved clears the hurdle (`02_investment_memo.md`).
 
-## 4. Launch Readiness Checklist
-- [x] **Product & Prototype:** Side-panel flow tested in usability sessions (`03_user_research.md`), including "Confirm", "Check in the ledger", and "Not this one" actions.
-- [x] **Evaluations:** Baseline evals passing (`0 / 50` policy misses, `0` cross-merchant leaks, `100 %` match precision in `evals/report_v0.md`).
-- [ ] **Coverage & Audit Log:** `RF-\d+` / approximate-amount tie-breaking deployed (`≥ 70 %` coverage) and audit log active for live tickets.
-- [x] **Rollback Plan:** `COPILOT_DRAFTS_ENABLED` kill switch ready for same-day disablement by Head of Support.
-- [ ] **Governance & Compliance:** DPO sign-off on payer data and LLM sub-processor in `governance.md`.
+## 3 · Rollout steps
+| Step | Scope | Duration | Gate (metric · threshold · read date) | Signs the next step |
+|---|---|---|---|---|
+| 0a | offline eval + rollback drill, laptop staging | done (27 Nov 2026) | coverage 87.5 % ≥ 70 % · precision 100 % ≥ 98 % · 0 forbidden output · switch drill PASS | Product Manager |
+| 0b | shadow mode on live status tickets (drafts logged, never shown) | 4–15 Jan 2027 | two human graders on 30 live drafts · coverage ≥ 70 % · precision ≥ 98 % · 0 forbidden output · L-07 / L-61 fix re-run · DPO conditions closed (§5) — read 15 Jan | Product Manager + DPO |
+| 1 | internal QA agents, then 5 % of status tickets | 18–22 Jan, then 25–27 Jan 2027 | 0 forbidden outputs · human-graded sendable ≥ 50 % on the weekly sample · p95 ≤ 4 s — read 29 Jan | Head of Support |
+| 2 | the A/B, 50 % of status tickets | 1–28 Feb 2027 (4 weeks) | time saved ≥ 38 % → ship · 15–37 % → iterate · < 15 % → kill · guardrails green in every segment — decided 1 Mar 2027 | Head of Support + Product Manager |
+| 3 | 100 % with a 5 % holdout | 6 months from March 2027 | monthly: four monitoring layers green, drift review | Head of Support |
 
-## 5. Known Risks & Mitigations
-| Risk | Likelihood | Impact | Mitigation |
-| :--- | :--- | :--- | :--- |
-| Agent rubber-stamps a wrong match | Med | High | L2 human confirmation, "Check in the ledger" button, computed-only evidence lines, and 5 % weekly QA audit + 7-day reopen tracking. |
-| Missed open account flag (e.g., bank change) | Low | High | Open flags pinned at the top of the side panel before the transaction card. |
-| Cross-merchant data leak | Low | Critical | Strict `merchant_id` query filtering on all ledger/CRM reads; `0`-tolerance rollback trigger. |
-| Handling time saved stays below 38 % flip point | Med | Med | Monitor A/B handling time in Weeks 3–4; if below 30 % base case, re-evaluate vs. non-AI unified account view (`€180k/yr`). |
+## 4 · Rollback & the switch
+Trigger: any draft promising money, any cross-merchant data, a missed bank-change flag on sent funds; a segment's 7-day reopen rate > 1.5× control for 2 weeks; human–judge agreement < 80 % or sendable < 45 % for 2 weeks; API errors > 1 % for 10 min · Who decides: **Head of Support** (at night: **on-call Backend / AI Engineer**) · Action: `COPILOT_MODE` → `SUGGEST_ONLY` (drafts visible, nothing can be sent) → `OFF` (no pre-read) · Time to execute: < 15 min · What people see: agents get "Copilot drafts paused — handle the ticket as usual"; merchants see no change · **Last tested: 27 November 2026, on the prototype (laptop staging, `python prototype/test_switch.py`, PASS), with Team Ledgerly. Next drill: 27 February 2027.**
 
-## 6. Post-Launch Next Steps (First 30 Days)
-- **Week 1–2:** Run 5 % weekly QA audit on approved replies and monitor `p95` latency and `NO_DRAFT` handling time.
-- **Week 4:** Read A/B test results on handling time, 7-day reopen rate, and segment parity (FR/EN, flagged accounts, high-volume merchants).
-- **End of Month 2:** Review unit cost per resolved ticket (`€10.00 → €7.60–€8.00`) with Finance to confirm business case.
+## 5 · Owners — and who signs
+| Decision | Owner | Written where |
+|---|---|---|
+| run an experiment on real users | Head of Support signs; the DPO reads | 06_07 §1–§2 · governance.md |
+| read the weekly numbers and act | Product Manager | 06_07 §3 |
+| press the switch | Head of Support; at night the on-call Backend / AI Engineer | 06_07 §4 · governance.md |
+| approve a release (prompt, model, KB) | Product Manager, with the eval re-run | evals/README.md |
+| keep the trace, answer a customer or a regulator | Lead Backend / Platform Engineer keeps it; Legal Counsel & DPO answer | governance.md |
+
+**The DPO has read the protocol (27 November 2026) and validates it under six conditions** (`governance.md`, Session 8): controller / processor role and DPA clause for the LLM sub-processor · EU processing, zero retention and no training at the provider · data minimisation (masked IBANs, no decline codes) · merchant isolation in the data layer · one retention period (12 months) for traces and logs · a short DPIA and agents trained before step 0b.
+
+**This launch is signed by the Head of Support and the Product Manager.**
+
+## 6 · What we do not know yet
+- **The time saved** (−38 % needed) — next experiment: the A/B of step 2, read on 1 March 2027.
+- **How the router copes with real merchant phrasing** — 7 misses on informal or very recent messages (`evals/reports/report_v1.md` §4); next experiment: the shadow run of step 0b, a test set nobody has seen.
+- **How many drafts agents will send without editing** — humans find 52.9 % sendable as is on the golden 30, mostly because answers leave part of the question implicit; next experiment: the re-aligned rubric on 30 shadow drafts (step 0b), then the edit rate in step 1.

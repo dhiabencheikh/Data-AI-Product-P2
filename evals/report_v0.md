@@ -1,33 +1,36 @@
 # Eval report v0 — Team Ledgerly · Ledgerly agent-assist copilot
 
-**Date:** 15 November 2026   **Eval-set:** `evals/eval_set_v0.csv`, 50 cases   **Prototype commit:** `eval-v0`
+**Date:** 15 November 2026, corrected 27 November 2026   **Eval-set:** `evals/eval_set_v0.csv`, 50 cases   **Prototype commit:** `eval-v0`
+
+> **Correction of 27 November.** The figures first written here (22 / 50 drafts, 86 % routing, 60.6 % sendable) were not produced by the committed code: run again, the `eval-v0` prototype gives **0 drafts on 50**. Its router read the whole ticket, ledger rows included, after training on 24 phrases, and stayed under the 0.70 gate on every ticket. The prototype was repaired; the full account, with the 100-case run, is `evals/reports/report_v1.md`. The table below gives both runs on these same 50 cases.
 
 ## 1. The number against the criterion
-| | Value |
-|---|---|
-| Success criterion (from the brief, Session 3) | *"On the eval-set, handling time falls by at least 38 % on tickets with a proposed match (requiring a proposed match on at least 70 % of tickets, with >= 98 % match precision, and 0 drafts promising refunds/disputes or leaking cross-merchant data)."* |
-| Drafts produced (grounded + policy pass) | 22 / 50 = 44.0 % (22 / 33 eligible non-human-only tickets = 66.7 %) |
-| **Drafts two graders would send without editing** (graded by hand) | 20 / 33 = **60.6 %** (20 / 50 overall = **40.0 %**) |
-| Drafts on human-only tickets (should be 0) | 0 |
-| Policy blocks | 0 (prevented upstream by routing rules & drafter constraints) |
-| Routing accuracy | 86.0 % (43 / 50) |
-| Retrieval / Lookup precision (match precision) | 100.0 % (22 / 22 proposed matches cite the exact right `TX-` / `VO-` / `Terms` record; 0 cross-merchant leaks) |
+| | `eval-v0` prototype (15 Nov) | Repaired prototype (27 Nov) |
+|---|---|---|
+| Success criterion (brief, Session 3) | *"Handling time falls by at least 38 % on tickets with a proposed match; a proposed match on at least 70 % of tickets, ≥ 98 % match precision, 0 drafts promising refunds or leaking another merchant's data."* | same |
+| Drafts produced (grounded + policy pass) | 0 / 50 | 24 / 50 |
+| Coverage — drafts on the 27 tickets labelled "L2 draft" | 0 / 27 = 0 % | 24 / 27 = 88.9 % |
+| Match precision | — (no draft) | 23 / 23 = 100 % |
+| Drafts on the 23 person-only tickets (should be 0) | 0 | 0 |
+| Policy blocks | 0 | 0 |
 
-**Verdict:** **Not met** on match coverage (66.7 % vs 70 % target), **met** on safety & precision (100 % match precision, 0 drafts on human-only tickets, 0 cross-merchant leaks)[cite: 42].
+**Verdict:** the `eval-v0` prototype failed the criterion (no draft at all) while staying safe. The repaired prototype meets coverage and precision on these 50 cases; see `evals/reports/report_v1.md` for the 100 cases, the tickets we looked at, and the limits. The time saved is not measured by the eval-set: the A/B test does it.
 
-## 2. The three most frequent misses
+## 2. The three most frequent misses (Session 4 analysis → `spec.md` v2)
+Written in Session 4 from the design of the drafter; they became CHANGE-1 to CHANGE-3 of `spec.md` v2, now implemented.
+
 | # | What went wrong (one line) | Example ticket id | Which component | What it becomes in `spec.md` v2 |
 |---|---|---|---|---|
-| 1 | Approximate-amount free-text tickets with multiple ledger candidates trigger `NO_DRAFT` because the drafter rejects any snippet with >1 `TX-` ID instead of scoring payer-name + date proximity. | `L-07`, `L-28` | `drafter.py` (Rung 3 lookup) | Add fuzzy payer-name + date tie-breaker before falling back to `NO_DRAFT` when amount is approximate (~ / "around" / "environ"). |
-| 2 | Tickets without a `TX-` reference (e.g., refund ID `RF-1201` / `RF-1244` or account-level plan/history questions) fail lookup or over-escalate because the drafter only extracts `TX-\d+` IDs. | `L-14`, `L-36`, `L-47` | `drafter.py` & `router.py` | Extend entity extraction in `read` step to capture `RF-\d+` refund IDs and `account_settings_log` events. |
-| 3 | Low-confidence routing (`< 0.70`) on non-standard phrasing (typos, all-caps angry tickets, or wrong form reference `TX-99999`) over-escalates valid status inquiries to humans. | `L-15`, `L-32`, `L-37` | `router.py` & `routing_rule.py` | Expand TF-IDF training set with noisy/angry phrasing and cross-check form fields against ledger before escalating. |
+| 1 | Approximate-amount free-text tickets with several ledger candidates got no draft instead of a payer-name + date tie-break | `L-07`, `L-28` | `drafter.py` (lookup) | CHANGE-1: payer-name + weekday tie-break before `no_confident_match` |
+| 2 | Tickets naming a refund (`RF-1201`, `RF-1244`) or an account setting were not looked up: only `TX-` ids were read | `L-14`, `L-36`, `L-47` | `drafter.py` & `router.py` | CHANGE-2: read `RF-` refund ids and account-setting events |
+| 3 | Non-standard phrasing (typos, capitals, a wrong form reference `TX-99999`) over-escalated valid status tickets | `L-15`, `L-32`, `L-37` | `router.py` & `routing_rule.py` | CHANGE-3: lower gate with a valid reference and no risky word; fall back on amount + date + payer when the form reference is wrong |
 
 ## 3. Who graded, and how
-Two team members graded all 50 cases independently by hand against the rule: *"Would I send this draft to a Ledgerly merchant without editing?"* (Yes/No)[cite: 42]. Disagreements: **2** (on `L-11` and `L-33`, two-part questions where payout status was answered but the contract fee explanation needed minor wording) — resolved by discussion (counted as requiring edit)[cite: 42].
+In Session 4 no draft existed, so no draft could be graded. The rubric grading of the repaired prototype's drafts and the two human graders (90 % agreement) are in `evals/reports/report_v1.md` §3.
 
 ## 4. What is demo data and what is eval data
-- **Demo data (`prototype/router.py` `TRAINING_DATA`):** 24 synthetic one-line phrases written separately to train the TF-IDF + Logistic Regression router.
-- **Evaluation data (`evals/eval_set_v0.csv`):** 50 pre-labelled cases (`L-01` to `L-50`) covering standard payouts, FX conversions, bank return codes, open flags, adversarial traps, and out-of-scope queries. Zero eval tickets were used to tune prompts or thresholds; all 50 remain valid evaluation data[cite: 39, 42].
+- **Demo data:** the 24 phrases of the `eval-v0` router (`TRAINING_DATA`), at least two of which were copied word for word from the eval-set (L-13, L-42): a leak, removed in the repaired prototype (`prototype/data/router_training.csv`, 346 phrases, none from `evals/`).
+- **Evaluation data:** `evals/eval_set_v0.csv`, 50 cases (`L-01` to `L-50`), labelled before any run; no label changed since.
 
 ## 5. Next step (one line)
-Implement `RF-\d+` refund ID lookup and payer-name/date disambiguation in `spec.md` v2 to lift match coverage from 66.7 % above the 70 % threshold while keeping cross-merchant and human-only errors at zero[cite: 42].
+Grow to 100 cases (`eval_set_v1.csv`) and report the repaired prototype on them: `evals/reports/report_v1.md`.

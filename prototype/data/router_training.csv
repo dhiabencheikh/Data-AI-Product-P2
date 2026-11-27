@@ -1,0 +1,347 @@
+text,category,language,origin
+Quick question: where is the payment from my client?,status,en,synthetic · written by the team for training only
+I still have not received the money for this order.!!!,status,en,synthetic · written by the team for training only
+"Hello, the payout is not on my bank account yet. Thanks.",status,en,synthetic · written by the team for training only
+"Hi, when will this transfer reach my bank? Thanks.",status,en,synthetic · written by the team for training only
+Quick question: can you check the status of this transaction?,status,en,synthetic · written by the team for training only
+Quick question: my customer paid last week and I see nothing.!!!,status,en,synthetic · written by the team for training only
+Please help: is yesterday's payment on its way?,status,en,synthetic · written by the team for training only
+Please help: why is this payout late? Thank you in advance.,status,en,synthetic · written by the team for training only
+A payment is missing on my statement.,status,en,synthetic · written by the team for training only
+I have been waiting for the money for days. Thanks.,status,en,synthetic · written by the team for training only
+"Hi, the client says he paid but nothing arrived. Please check.",status,en,synthetic · written by the team for training only
+Please help: what happened to this transfer?,status,en,synthetic · written by the team for training only
+Please help: where is my money? Thanks.,status,en,synthetic · written by the team for training only
+Quick question: the payment of the invoice does not show up.!!!,status,en,synthetic · written by the team for training only
+Quick question: my payout from this week never arrived. Please check.,status,en,synthetic · written by the team for training only
+"Good morning, why was this payout sent back? Thanks.",status,en,synthetic · written by the team for training only
+"Good morning, has the foreign currency payment been converted yet? Please check.",status,en,synthetic · written by the team for training only
+"Hello, ref amount date customer Answer quickly please!",status,en,synthetic · written by the team for training only
+"This is unacceptable, a week without my money Answer quickly please!",status,en,synthetic · written by the team for training only
+"Hi, pay me what you owe me now!!!",status,en,synthetic · written by the team for training only
+"Good morning, payement not recieved yet from my client It is urgent.",status,en,synthetic · written by the team for training only
+"Hello, my client paid an hour ago and I cannot see it yet Thanks.",status,en,synthetic · written by the team for training only
+"Hi, a payment made this morning is not showing on my side Answer quickly please!",status,en,synthetic · written by the team for training only
+"Hello, second time I write about this transfer, still nothing",status,en,synthetic · written by the team for training only
+I already asked about this payment and got no answer Thank you in advance.,status,en,synthetic · written by the team for training only
+"The card of my client was refused, what happened? It is urgent.",status,en,synthetic · written by the team for training only
+"Hello, the customer says the money left his account, we have nothing Please check.",status,en,synthetic · written by the team for training only
+"Bonsoir, où est le paiement de mon client ? Répondez vite svp !",status,fr,synthetic · written by the team for training only
+Je n'ai toujours pas reçu ce virement. !!,status,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, quand le versement arrivera-t-il sur mon compte ? Merci de vérifier.",status,fr,synthetic · written by the team for training only
+Le règlement de la commande n'apparaît pas sur notre relevé. Merci d'avance.,status,fr,synthetic · written by the team for training only
+Pouvez-vous vérifier où en est cette transaction ? Merci de vérifier.,status,fr,synthetic · written by the team for training only
+"Bonsoir, mon client a payé mais je ne vois rien. Répondez vite svp !",status,fr,synthetic · written by the team for training only
+Question rapide : le virement de cette semaine n'est pas arrivé. Répondez vite svp !,status,fr,synthetic · written by the team for training only
+"Bonsoir, pourquoi ce versement est-il en retard ? Merci de vérifier.",status,fr,synthetic · written by the team for training only
+"Bonjour, j'attends ce paiement depuis plusieurs jours. !!",status,fr,synthetic · written by the team for training only
+Où en est mon argent ?,status,fr,synthetic · written by the team for training only
+"Bonjour, rien vu passer pour ce règlement de la semaine dernière Répondez vite svp !",status,fr,synthetic · written by the team for training only
+"Bonsoir, j'attends un règlement de mon client depuis jeudi",status,fr,synthetic · written by the team for training only
+"Bonjour, c'est la deuxième fois que je relance pour ce paiement Répondez vite svp !",status,fr,synthetic · written by the team for training only
+Le paiement de ce matin n'apparaît pas encore Merci d'avance.,status,fr,synthetic · written by the team for training only
+"Bonsoir, ce paiement est-il bien parti ? Merci d'avance.",status,fr,synthetic · written by the team for training only
+"Bonsoir, le virement du client n'est pas sur notre compte bancaire Merci.",status,fr,synthetic · written by the team for training only
+"THIS IS UNACCEPTABLE, A WEEK WITHOUT MY MONEY ANSWER QUICKLY PLEASE!",status,en,synthetic · written by the team for training only
+"HI, PAY ME WHAT YOU OWE ME NOW!!!",status,en,synthetic · written by the team for training only
+"HI, A PAYMENT MADE THIS MORNING IS NOT SHOWING ON MY SIDE ANSWER QUICKLY PLEASE!",status,en,synthetic · written by the team for training only
+"HELLO, SECOND TIME I WRITE ABOUT THIS TRANSFER, STILL NOTHING",status,en,synthetic · written by the team for training only
+I ALREADY ASKED ABOUT THIS PAYMENT AND GOT NO ANSWER THANK YOU IN ADVANCE.,status,en,synthetic · written by the team for training only
+"HELLO, THE CUSTOMER SAYS THE MONEY LEFT HIS ACCOUNT, WE HAVE NOTHING PLEASE CHECK.",status,en,synthetic · written by the team for training only
+LE RÈGLEMENT DE LA COMMANDE N'APPARAÎT PAS SUR NOTRE RELEVÉ. MERCI D'AVANCE.,status,fr,synthetic · written by the team for training only
+QUESTION RAPIDE : LE VIREMENT DE CETTE SEMAINE N'EST PAS ARRIVÉ. RÉPONDEZ VITE SVP !,status,fr,synthetic · written by the team for training only
+"BONJOUR, J'ATTENDS CE PAIEMENT DEPUIS PLUSIEURS JOURS. !!",status,fr,synthetic · written by the team for training only
+"BONJOUR, C'EST LA DEUXIÈME FOIS QUE JE RELANCE POUR CE PAIEMENT RÉPONDEZ VITE SVP !",status,fr,synthetic · written by the team for training only
+"Hi, my customer is still waiting for the refund you sent. Thank you in advance.",refund_status,en,synthetic · written by the team for training only
+Please help: the client has not seen the refund on his card yet. It is urgent.,refund_status,en,synthetic · written by the team for training only
+Quick question: where is the refund for my customer? Answer quickly please!,refund_status,en,synthetic · written by the team for training only
+"Good morning, when will the refund reach the buyer's bank? Thanks.",refund_status,en,synthetic · written by the team for training only
+Please help: the buyer says the refund never showed up. Thanks.,refund_status,en,synthetic · written by the team for training only
+"Hello, has the refund been sent to the customer's bank? Answer quickly please!",refund_status,en,synthetic · written by the team for training only
+"Good morning, the refund of last week never reached the customer's card Answer quickly please!",refund_status,en,synthetic · written by the team for training only
+"Hi, my buyer still has not received the money you refunded It is urgent.",refund_status,en,synthetic · written by the team for training only
+Question rapide : mon client attend toujours son remboursement. Merci d'avance.,refund_status,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, le remboursement n'est pas arrivé chez le client. Répondez vite svp !",refund_status,fr,synthetic · written by the team for training only
+"Bonsoir, où en est le remboursement envoyé au client ? Répondez vite svp !",refund_status,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, le client ne voit pas le remboursement sur sa carte. Merci de vérifier.",refund_status,fr,synthetic · written by the team for training only
+Question rapide : l'acheteur n'a toujours rien reçu du remboursement Merci d'avance.,refund_status,fr,synthetic · written by the team for training only
+Please help: where is the refund for my customer?!!!,refund_status,en,synthetic · written by the team for training only
+"Bonjour, mon client attend toujours son remboursement.",refund_status,fr,synthetic · written by the team for training only
+Please help: the buyer says the refund never showed up.!!!,refund_status,en,synthetic · written by the team for training only
+Quick question: the refund of last week never reached the customer's card It is urgent.,refund_status,en,synthetic · written by the team for training only
+"Good morning, where is the refund for my customer? Please check.",refund_status,en,synthetic · written by the team for training only
+My customer is still waiting for the refund you sent.!!!,refund_status,en,synthetic · written by the team for training only
+My customer is still waiting for the refund you sent. Thanks.,refund_status,en,synthetic · written by the team for training only
+The buyer says the refund never showed up.,refund_status,en,synthetic · written by the team for training only
+"Bonsoir, où en est le remboursement envoyé au client ?",refund_status,fr,synthetic · written by the team for training only
+The client has not seen the refund on his card yet. Answer quickly please!,refund_status,en,synthetic · written by the team for training only
+Where is the refund for my customer?,refund_status,en,synthetic · written by the team for training only
+"Hello, where is the refund for my customer? Thanks.",refund_status,en,synthetic · written by the team for training only
+"Good morning, where is the refund for my customer? Answer quickly please!",refund_status,en,synthetic · written by the team for training only
+Question rapide : mon client attend toujours son remboursement. !!,refund_status,fr,synthetic · written by the team for training only
+L'acheteur n'a toujours rien reçu du remboursement Merci de vérifier.,refund_status,fr,synthetic · written by the team for training only
+Please help: my customer is still waiting for the refund you sent.,refund_status,en,synthetic · written by the team for training only
+"Hi, my buyer still has not received the money you refunded Thanks.",refund_status,en,synthetic · written by the team for training only
+Please help: my buyer still has not received the money you refunded It is urgent.,refund_status,en,synthetic · written by the team for training only
+Please help: the refund of last week never reached the customer's card Answer quickly please!,refund_status,en,synthetic · written by the team for training only
+"Bonsoir, mon client attend toujours son remboursement. Merci d'avance.",refund_status,fr,synthetic · written by the team for training only
+Quick question: the buyer says the refund never showed up. It is urgent.,refund_status,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, où en est le remboursement envoyé au client ? !!",refund_status,fr,synthetic · written by the team for training only
+"Hi, the client has not seen the refund on his card yet. Answer quickly please!",refund_status,en,synthetic · written by the team for training only
+Quick question: the refund of last week never reached the customer's card Answer quickly please!,refund_status,en,synthetic · written by the team for training only
+"Bonjour, le client ne voit pas le remboursement sur sa carte. Merci.",refund_status,fr,synthetic · written by the team for training only
+The client has not seen the refund on his card yet. Thank you in advance.,refund_status,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, où en est le remboursement envoyé au client ? Merci d'avance.",refund_status,fr,synthetic · written by the team for training only
+"HI, MY CUSTOMER IS STILL WAITING FOR THE REFUND YOU SENT. THANK YOU IN ADVANCE.",refund_status,en,synthetic · written by the team for training only
+QUICK QUESTION: WHERE IS THE REFUND FOR MY CUSTOMER? ANSWER QUICKLY PLEASE!,refund_status,en,synthetic · written by the team for training only
+"BONJOUR, MON CLIENT ATTEND TOUJOURS SON REMBOURSEMENT.",refund_status,fr,synthetic · written by the team for training only
+QUICK QUESTION: THE REFUND OF LAST WEEK NEVER REACHED THE CUSTOMER'S CARD IT IS URGENT.,refund_status,en,synthetic · written by the team for training only
+L'ACHETEUR N'A TOUJOURS RIEN REÇU DU REMBOURSEMENT MERCI DE VÉRIFIER.,refund_status,fr,synthetic · written by the team for training only
+PLEASE HELP: MY CUSTOMER IS STILL WAITING FOR THE REFUND YOU SENT.,refund_status,en,synthetic · written by the team for training only
+"HI, THE CLIENT HAS NOT SEEN THE REFUND ON HIS CARD YET. ANSWER QUICKLY PLEASE!",refund_status,en,synthetic · written by the team for training only
+THE CLIENT HAS NOT SEEN THE REFUND ON HIS CARD YET. THANK YOU IN ADVANCE.,refund_status,en,synthetic · written by the team for training only
+"Good morning, please refund my customer for this order. Thanks.",refund_request,en,synthetic · written by the team for training only
+"Good morning, refund the buyer now, the item came back.!!!",refund_request,en,synthetic · written by the team for training only
+"Hi, issue a refund to my client today. Thank you in advance.",refund_request,en,synthetic · written by the team for training only
+Please help: send the money back to the customer. Answer quickly please!,refund_request,en,synthetic · written by the team for training only
+Please help: make a partial refund on this order. Thank you in advance.,refund_request,en,synthetic · written by the team for training only
+"Quick question: process the refund yourself, it is a small amount.!!!",refund_request,en,synthetic · written by the team for training only
+Remboursez le client s'il vous plaît. !!,refund_request,fr,synthetic · written by the team for training only
+"Bonjour, merci d'effectuer le remboursement de cette commande. Merci de vérifier.",refund_request,fr,synthetic · written by the team for training only
+"Bonjour, faites un remboursement partiel au client. Merci de vérifier.",refund_request,fr,synthetic · written by the team for training only
+"Bonsoir, rendez l'argent à l'acheteur aujourd'hui. !!",refund_request,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, faites un remboursement partiel au client. C'est urgent.",refund_request,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, remboursez le client s'il vous plaît. Merci.",refund_request,fr,synthetic · written by the team for training only
+"Please help: process the refund yourself, it is a small amount.",refund_request,en,synthetic · written by the team for training only
+Quick question: issue a refund to my client today. Please check.,refund_request,en,synthetic · written by the team for training only
+"Hello, send the money back to the customer. Thanks.",refund_request,en,synthetic · written by the team for training only
+"Hello, process the refund yourself, it is a small amount. Thank you in advance.",refund_request,en,synthetic · written by the team for training only
+Quick question: please refund my customer for this order. Thanks.,refund_request,en,synthetic · written by the team for training only
+"Good morning, send the money back to the customer. Answer quickly please!",refund_request,en,synthetic · written by the team for training only
+"Good morning, make a partial refund on this order. Thanks.",refund_request,en,synthetic · written by the team for training only
+Please help: issue a refund to my client today.!!!,refund_request,en,synthetic · written by the team for training only
+"Hi, refund the buyer now, the item came back.",refund_request,en,synthetic · written by the team for training only
+Please help: please refund my customer for this order. Please check.,refund_request,en,synthetic · written by the team for training only
+"Please help: refund the buyer now, the item came back. It is urgent.",refund_request,en,synthetic · written by the team for training only
+"Bonsoir, rendez l'argent à l'acheteur aujourd'hui. Merci de vérifier.",refund_request,fr,synthetic · written by the team for training only
+"Hi, process the refund yourself, it is a small amount.!!!",refund_request,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, rendez l'argent à l'acheteur aujourd'hui.",refund_request,fr,synthetic · written by the team for training only
+"Hi, issue a refund to my client today.",refund_request,en,synthetic · written by the team for training only
+"Hi, please refund my customer for this order. Thank you in advance.",refund_request,en,synthetic · written by the team for training only
+"Quick question: refund the buyer now, the item came back.!!!",refund_request,en,synthetic · written by the team for training only
+"Good morning, make a partial refund on this order.",refund_request,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, faites un remboursement partiel au client. Merci de vérifier.",refund_request,fr,synthetic · written by the team for training only
+Issue a refund to my client today. Thank you in advance.,refund_request,en,synthetic · written by the team for training only
+Issue a refund to my client today. Thanks.,refund_request,en,synthetic · written by the team for training only
+Quick question: issue a refund to my client today. It is urgent.,refund_request,en,synthetic · written by the team for training only
+"Hi, process the refund yourself, it is a small amount. Answer quickly please!",refund_request,en,synthetic · written by the team for training only
+"Hi, process the refund yourself, it is a small amount.",refund_request,en,synthetic · written by the team for training only
+"Hi, please refund my customer for this order. Answer quickly please!",refund_request,en,synthetic · written by the team for training only
+"Hello, refund the buyer now, the item came back.!!!",refund_request,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, merci d'effectuer le remboursement de cette commande. !!",refund_request,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, merci d'effectuer le remboursement de cette commande.",refund_request,fr,synthetic · written by the team for training only
+PLEASE HELP: SEND THE MONEY BACK TO THE CUSTOMER. ANSWER QUICKLY PLEASE!,refund_request,en,synthetic · written by the team for training only
+PLEASE HELP: MAKE A PARTIAL REFUND ON THIS ORDER. THANK YOU IN ADVANCE.,refund_request,en,synthetic · written by the team for training only
+"BONJOUR, FAITES UN REMBOURSEMENT PARTIEL AU CLIENT. MERCI DE VÉRIFIER.",refund_request,fr,synthetic · written by the team for training only
+"BONSOIR, RENDEZ L'ARGENT À L'ACHETEUR AUJOURD'HUI. !!",refund_request,fr,synthetic · written by the team for training only
+"GOOD MORNING, SEND THE MONEY BACK TO THE CUSTOMER. ANSWER QUICKLY PLEASE!",refund_request,en,synthetic · written by the team for training only
+"BONJOUR À L'ÉQUIPE, FAITES UN REMBOURSEMENT PARTIEL AU CLIENT. MERCI DE VÉRIFIER.",refund_request,fr,synthetic · written by the team for training only
+ISSUE A REFUND TO MY CLIENT TODAY. THANKS.,refund_request,en,synthetic · written by the team for training only
+"HI, PROCESS THE REFUND YOURSELF, IT IS A SMALL AMOUNT.",refund_request,en,synthetic · written by the team for training only
+"Hi, the buyer opened a chargeback, cancel it. It is urgent.",dispute,en,synthetic · written by the team for training only
+"Hi, a customer disputes this payment, close the dispute. Thank you in advance.",dispute,en,synthetic · written by the team for training only
+"Please help: chargeback on my order, I have the proof of delivery. Answer quickly please!",dispute,en,synthetic · written by the team for training only
+"Hi, remove this dispute and release my funds. Thank you in advance.",dispute,en,synthetic · written by the team for training only
+Please help: the client claims he never got the goods and filed a dispute.!!!,dispute,en,synthetic · written by the team for training only
+"Quick question: stop this chargeback, the customer is lying. It is urgent.",dispute,en,synthetic · written by the team for training only
+"Bonsoir, un client conteste le paiement, annulez le litige. Répondez vite svp !",dispute,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, rétrofacturation ouverte, j'ai la preuve de livraison. !!",dispute,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, fermez ce litige et débloquez mes fonds. Merci d'avance.",dispute,fr,synthetic · written by the team for training only
+"Bonjour, l'acheteur a ouvert une contestation sur cette commande. !!",dispute,fr,synthetic · written by the team for training only
+"Bonjour, rétrofacturation ouverte, j'ai la preuve de livraison. Merci d'avance.",dispute,fr,synthetic · written by the team for training only
+Fermez ce litige et débloquez mes fonds. Merci.,dispute,fr,synthetic · written by the team for training only
+"Good morning, remove this dispute and release my funds. Thank you in advance.",dispute,en,synthetic · written by the team for training only
+"Bonsoir, l'acheteur a ouvert une contestation sur cette commande. Répondez vite svp !",dispute,fr,synthetic · written by the team for training only
+"Bonsoir, un client conteste le paiement, annulez le litige. Merci.",dispute,fr,synthetic · written by the team for training only
+"Rétrofacturation ouverte, j'ai la preuve de livraison. !!",dispute,fr,synthetic · written by the team for training only
+"Quick question: the buyer opened a chargeback, cancel it. Thanks.",dispute,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, un client conteste le paiement, annulez le litige. C'est urgent.",dispute,fr,synthetic · written by the team for training only
+"Hi, stop this chargeback, the customer is lying. It is urgent.",dispute,en,synthetic · written by the team for training only
+"Good morning, a customer disputes this payment, close the dispute. Please check.",dispute,en,synthetic · written by the team for training only
+"Bonjour, un client conteste le paiement, annulez le litige. Répondez vite svp !",dispute,fr,synthetic · written by the team for training only
+"Please help: stop this chargeback, the customer is lying. Thanks.",dispute,en,synthetic · written by the team for training only
+"Hello, the client claims he never got the goods and filed a dispute. It is urgent.",dispute,en,synthetic · written by the team for training only
+"Good morning, the client claims he never got the goods and filed a dispute. Answer quickly please!",dispute,en,synthetic · written by the team for training only
+"Good morning, the buyer opened a chargeback, cancel it. Please check.",dispute,en,synthetic · written by the team for training only
+Please help: remove this dispute and release my funds.,dispute,en,synthetic · written by the team for training only
+"The buyer opened a chargeback, cancel it.",dispute,en,synthetic · written by the team for training only
+"Bonsoir, l'acheteur a ouvert une contestation sur cette commande. Merci de vérifier.",dispute,fr,synthetic · written by the team for training only
+"Hello, a customer disputes this payment, close the dispute. Please check.",dispute,en,synthetic · written by the team for training only
+"Good morning, the client claims he never got the goods and filed a dispute. Thanks.",dispute,en,synthetic · written by the team for training only
+"Bonsoir, un client conteste le paiement, annulez le litige.",dispute,fr,synthetic · written by the team for training only
+"Question rapide : rétrofacturation ouverte, j'ai la preuve de livraison. !!",dispute,fr,synthetic · written by the team for training only
+"Quick question: a customer disputes this payment, close the dispute. It is urgent.",dispute,en,synthetic · written by the team for training only
+"Hello, the buyer opened a chargeback, cancel it.",dispute,en,synthetic · written by the team for training only
+"Bonsoir, fermez ce litige et débloquez mes fonds. Merci d'avance.",dispute,fr,synthetic · written by the team for training only
+"Hi, the client claims he never got the goods and filed a dispute. Thanks.",dispute,en,synthetic · written by the team for training only
+"Bonjour, un client conteste le paiement, annulez le litige. Merci.",dispute,fr,synthetic · written by the team for training only
+"Bonjour, un client conteste le paiement, annulez le litige. Merci de vérifier.",dispute,fr,synthetic · written by the team for training only
+The client claims he never got the goods and filed a dispute. Please check.,dispute,en,synthetic · written by the team for training only
+"Hi, the buyer opened a chargeback, cancel it. Please check.",dispute,en,synthetic · written by the team for training only
+"HI, THE BUYER OPENED A CHARGEBACK, CANCEL IT. IT IS URGENT.",dispute,en,synthetic · written by the team for training only
+"HI, A CUSTOMER DISPUTES THIS PAYMENT, CLOSE THE DISPUTE. THANK YOU IN ADVANCE.",dispute,en,synthetic · written by the team for training only
+"BONJOUR À L'ÉQUIPE, FERMEZ CE LITIGE ET DÉBLOQUEZ MES FONDS. MERCI D'AVANCE.",dispute,fr,synthetic · written by the team for training only
+FERMEZ CE LITIGE ET DÉBLOQUEZ MES FONDS. MERCI.,dispute,fr,synthetic · written by the team for training only
+"HI, STOP THIS CHARGEBACK, THE CUSTOMER IS LYING. IT IS URGENT.",dispute,en,synthetic · written by the team for training only
+"GOOD MORNING, A CUSTOMER DISPUTES THIS PAYMENT, CLOSE THE DISPUTE. PLEASE CHECK.",dispute,en,synthetic · written by the team for training only
+"PLEASE HELP: STOP THIS CHARGEBACK, THE CUSTOMER IS LYING. THANKS.",dispute,en,synthetic · written by the team for training only
+"BONSOIR, UN CLIENT CONTESTE LE PAIEMENT, ANNULEZ LE LITIGE.",dispute,fr,synthetic · written by the team for training only
+"QUESTION RAPIDE : RÉTROFACTURATION OUVERTE, J'AI LA PREUVE DE LIVRAISON. !!",dispute,fr,synthetic · written by the team for training only
+"HELLO, THE BUYER OPENED A CHARGEBACK, CANCEL IT.",dispute,en,synthetic · written by the team for training only
+"HI, THE BUYER OPENED A CHARGEBACK, CANCEL IT. PLEASE CHECK.",dispute,en,synthetic · written by the team for training only
+"Good morning, please waive the fee on this payment. Please check.",fee_waiver,en,synthetic · written by the team for training only
+Please help: can you cancel the commission as a goodwill gesture?!!!,fee_waiver,en,synthetic · written by the team for training only
+"Good morning, remove the fees for this month, we are a loyal client. Thank you in advance.",fee_waiver,en,synthetic · written by the team for training only
+Quick question: we would like the fee refunded as a commercial gesture. Thank you in advance.,fee_waiver,en,synthetic · written by the team for training only
+"Good morning, drop the processing fee on this large transaction.!!!",fee_waiver,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, merci d'annuler les frais sur cette transaction. Merci d'avance.",fee_waiver,fr,synthetic · written by the team for training only
+"Bonjour, pouvez-vous faire un geste commercial sur la commission ?",fee_waiver,fr,synthetic · written by the team for training only
+"Question rapide : supprimez les frais de ce mois, nous sommes fidèles.",fee_waiver,fr,synthetic · written by the team for training only
+"Hi, we would like the fee refunded as a commercial gesture. Answer quickly please!",fee_waiver,en,synthetic · written by the team for training only
+"Please help: remove the fees for this month, we are a loyal client. It is urgent.",fee_waiver,en,synthetic · written by the team for training only
+Pouvez-vous faire un geste commercial sur la commission ?,fee_waiver,fr,synthetic · written by the team for training only
+"Hi, please waive the fee on this payment. Thanks.",fee_waiver,en,synthetic · written by the team for training only
+"Hello, can you cancel the commission as a goodwill gesture? Answer quickly please!",fee_waiver,en,synthetic · written by the team for training only
+"Bonsoir, supprimez les frais de ce mois, nous sommes fidèles. Merci de vérifier.",fee_waiver,fr,synthetic · written by the team for training only
+"Please help: remove the fees for this month, we are a loyal client. Answer quickly please!",fee_waiver,en,synthetic · written by the team for training only
+"Remove the fees for this month, we are a loyal client. Thanks.",fee_waiver,en,synthetic · written by the team for training only
+Can you cancel the commission as a goodwill gesture?!!!,fee_waiver,en,synthetic · written by the team for training only
+"Bonjour, supprimez les frais de ce mois, nous sommes fidèles. !!",fee_waiver,fr,synthetic · written by the team for training only
+Please help: please waive the fee on this payment.,fee_waiver,en,synthetic · written by the team for training only
+Quick question: can you cancel the commission as a goodwill gesture? It is urgent.,fee_waiver,en,synthetic · written by the team for training only
+"Bonjour, merci d'annuler les frais sur cette transaction. Merci d'avance.",fee_waiver,fr,synthetic · written by the team for training only
+"Hello, remove the fees for this month, we are a loyal client. Answer quickly please!",fee_waiver,en,synthetic · written by the team for training only
+"Good morning, remove the fees for this month, we are a loyal client.!!!",fee_waiver,en,synthetic · written by the team for training only
+"Hi, drop the processing fee on this large transaction. Answer quickly please!",fee_waiver,en,synthetic · written by the team for training only
+"Hi, please waive the fee on this payment.",fee_waiver,en,synthetic · written by the team for training only
+Can you cancel the commission as a goodwill gesture? Thank you in advance.,fee_waiver,en,synthetic · written by the team for training only
+"Hello, can you cancel the commission as a goodwill gesture?!!!",fee_waiver,en,synthetic · written by the team for training only
+Please help: please waive the fee on this payment. Thanks.,fee_waiver,en,synthetic · written by the team for training only
+"Hello, please waive the fee on this payment. Answer quickly please!",fee_waiver,en,synthetic · written by the team for training only
+"Hi, drop the processing fee on this large transaction.!!!",fee_waiver,en,synthetic · written by the team for training only
+"Bonsoir, supprimez les frais de ce mois, nous sommes fidèles. Merci d'avance.",fee_waiver,fr,synthetic · written by the team for training only
+"Hello, remove the fees for this month, we are a loyal client. Please check.",fee_waiver,en,synthetic · written by the team for training only
+Quick question: please waive the fee on this payment. Please check.,fee_waiver,en,synthetic · written by the team for training only
+"Hello, remove the fees for this month, we are a loyal client. Thanks.",fee_waiver,en,synthetic · written by the team for training only
+"Supprimez les frais de ce mois, nous sommes fidèles.",fee_waiver,fr,synthetic · written by the team for training only
+"Remove the fees for this month, we are a loyal client.!!!",fee_waiver,en,synthetic · written by the team for training only
+"Hi, we would like the fee refunded as a commercial gesture.",fee_waiver,en,synthetic · written by the team for training only
+Pouvez-vous faire un geste commercial sur la commission ? Merci.,fee_waiver,fr,synthetic · written by the team for training only
+"Hello, we would like the fee refunded as a commercial gesture. It is urgent.",fee_waiver,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, merci d'annuler les frais sur cette transaction. Répondez vite svp !",fee_waiver,fr,synthetic · written by the team for training only
+PLEASE HELP: CAN YOU CANCEL THE COMMISSION AS A GOODWILL GESTURE?!!!,fee_waiver,en,synthetic · written by the team for training only
+"BONJOUR, POUVEZ-VOUS FAIRE UN GESTE COMMERCIAL SUR LA COMMISSION ?",fee_waiver,fr,synthetic · written by the team for training only
+"QUESTION RAPIDE : SUPPRIMEZ LES FRAIS DE CE MOIS, NOUS SOMMES FIDÈLES.",fee_waiver,fr,synthetic · written by the team for training only
+"HELLO, CAN YOU CANCEL THE COMMISSION AS A GOODWILL GESTURE? ANSWER QUICKLY PLEASE!",fee_waiver,en,synthetic · written by the team for training only
+"REMOVE THE FEES FOR THIS MONTH, WE ARE A LOYAL CLIENT. THANKS.",fee_waiver,en,synthetic · written by the team for training only
+PLEASE HELP: PLEASE WAIVE THE FEE ON THIS PAYMENT.,fee_waiver,en,synthetic · written by the team for training only
+CAN YOU CANCEL THE COMMISSION AS A GOODWILL GESTURE? THANK YOU IN ADVANCE.,fee_waiver,en,synthetic · written by the team for training only
+"HELLO, PLEASE WAIVE THE FEE ON THIS PAYMENT. ANSWER QUICKLY PLEASE!",fee_waiver,en,synthetic · written by the team for training only
+"BONSOIR, SUPPRIMEZ LES FRAIS DE CE MOIS, NOUS SOMMES FIDÈLES. MERCI D'AVANCE.",fee_waiver,fr,synthetic · written by the team for training only
+QUICK QUESTION: PLEASE WAIVE THE FEE ON THIS PAYMENT. PLEASE CHECK.,fee_waiver,en,synthetic · written by the team for training only
+"REMOVE THE FEES FOR THIS MONTH, WE ARE A LOYAL CLIENT.!!!",fee_waiver,en,synthetic · written by the team for training only
+"Quick question: all my payouts are blocked, what is happening?!!!",account,en,synthetic · written by the team for training only
+"Good morning, no payment has reached us for days. Thanks.",account,en,synthetic · written by the team for training only
+"Hello, our account seems suspended, nothing is paid out. Thanks.",account,en,synthetic · written by the team for training only
+"Good morning, every payout stopped this week.!!!",account,en,synthetic · written by the team for training only
+"Hello, none of our transfers arrive any more. It is urgent.",account,en,synthetic · written by the team for training only
+"Nothing gets paid out any more, is my account blocked? Please check.",account,en,synthetic · written by the team for training only
+"Hello, why did every payout stop at once?",account,en,synthetic · written by the team for training only
+Question rapide : tous nos versements sont bloqués depuis hier. !!,account,fr,synthetic · written by the team for training only
+Aucun paiement ne nous parvient cette semaine. Merci.,account,fr,synthetic · written by the team for training only
+"Bonjour, notre compte semble suspendu, plus rien n'est versé. Répondez vite svp !",account,fr,synthetic · written by the team for training only
+"Question rapide : tous les virements sont arrêtés, que se passe-t-il ?",account,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, nos versements sont suspendus, pourquoi ?",account,fr,synthetic · written by the team for training only
+"Bonjour, tous nos versements sont bloqués depuis hier. Merci d'avance.",account,fr,synthetic · written by the team for training only
+"Bonjour, tous nos versements sont bloqués depuis hier. !!",account,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, aucun paiement ne nous parvient cette semaine. Merci de vérifier.",account,fr,synthetic · written by the team for training only
+"Please help: all my payouts are blocked, what is happening? Thanks.",account,en,synthetic · written by the team for training only
+"Hello, all my payouts are blocked, what is happening? It is urgent.",account,en,synthetic · written by the team for training only
+"Hi, why did every payout stop at once? Please check.",account,en,synthetic · written by the team for training only
+"Quick question: all my payouts are blocked, what is happening? Please check.",account,en,synthetic · written by the team for training only
+"Bonjour, tous nos versements sont bloqués depuis hier. Répondez vite svp !",account,fr,synthetic · written by the team for training only
+"Hi, no payment has reached us for days. Thanks.",account,en,synthetic · written by the team for training only
+"Hello, none of our transfers arrive any more. Please check.",account,en,synthetic · written by the team for training only
+"Notre compte semble suspendu, plus rien n'est versé. C'est urgent.",account,fr,synthetic · written by the team for training only
+"Hello, none of our transfers arrive any more.!!!",account,en,synthetic · written by the team for training only
+Every payout stopped this week. Thank you in advance.,account,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, tous nos versements sont bloqués depuis hier. Répondez vite svp !",account,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, tous les virements sont arrêtés, que se passe-t-il ? !!",account,fr,synthetic · written by the team for training only
+"Good morning, every payout stopped this week. Thanks.",account,en,synthetic · written by the team for training only
+"Bonsoir, notre compte semble suspendu, plus rien n'est versé. Répondez vite svp !",account,fr,synthetic · written by the team for training only
+"Quick question: all my payouts are blocked, what is happening? Answer quickly please!",account,en,synthetic · written by the team for training only
+"Tous les virements sont arrêtés, que se passe-t-il ? !!",account,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, tous nos versements sont bloqués depuis hier. !!",account,fr,synthetic · written by the team for training only
+Every payout stopped this week.!!!,account,en,synthetic · written by the team for training only
+"Bonjour, notre compte semble suspendu, plus rien n'est versé. Merci d'avance.",account,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, aucun paiement ne nous parvient cette semaine.",account,fr,synthetic · written by the team for training only
+"Tous les virements sont arrêtés, que se passe-t-il ? Répondez vite svp !",account,fr,synthetic · written by the team for training only
+"Bonsoir, notre compte semble suspendu, plus rien n'est versé. C'est urgent.",account,fr,synthetic · written by the team for training only
+Aucun paiement ne nous parvient cette semaine. C'est urgent.,account,fr,synthetic · written by the team for training only
+"Bonjour, tous les virements sont arrêtés, que se passe-t-il ? Merci de vérifier.",account,fr,synthetic · written by the team for training only
+Please help: every payout stopped this week. It is urgent.,account,en,synthetic · written by the team for training only
+"BONJOUR, NOTRE COMPTE SEMBLE SUSPENDU, PLUS RIEN N'EST VERSÉ. RÉPONDEZ VITE SVP !",account,fr,synthetic · written by the team for training only
+"HI, WHY DID EVERY PAYOUT STOP AT ONCE? PLEASE CHECK.",account,en,synthetic · written by the team for training only
+"BONJOUR, TOUS NOS VERSEMENTS SONT BLOQUÉS DEPUIS HIER. RÉPONDEZ VITE SVP !",account,fr,synthetic · written by the team for training only
+"HELLO, NONE OF OUR TRANSFERS ARRIVE ANY MORE.!!!",account,en,synthetic · written by the team for training only
+"BONJOUR, NOTRE COMPTE SEMBLE SUSPENDU, PLUS RIEN N'EST VERSÉ. MERCI D'AVANCE.",account,fr,synthetic · written by the team for training only
+Quick question: how do I change my password? Please check.,out_of_scope,en,synthetic · written by the team for training only
+Please help: how can I invite a colleague to the dashboard? Please check.,out_of_scope,en,synthetic · written by the team for training only
+"Good morning, how do I download an invoice?",out_of_scope,en,synthetic · written by the team for training only
+"Good morning, what is new in the latest product release? Thanks.",out_of_scope,en,synthetic · written by the team for training only
+"Hi, how do I set up two-factor authentication? Please check.",out_of_scope,en,synthetic · written by the team for training only
+Please help: how can I change the logo on my payment page? Please check.,out_of_scope,en,synthetic · written by the team for training only
+Comment modifier l'adresse de facturation ?,out_of_scope,fr,synthetic · written by the team for training only
+Question rapide : comment créer un nouvel utilisateur ? Répondez vite svp !,out_of_scope,fr,synthetic · written by the team for training only
+Comment exporter mes données ? Répondez vite svp !,out_of_scope,fr,synthetic · written by the team for training only
+"Bonsoir, comment changer la langue du tableau de bord ? Répondez vite svp !",out_of_scope,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, comment modifier l'adresse de facturation ?",out_of_scope,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, comment modifier l'adresse de facturation ? Merci d'avance.",out_of_scope,fr,synthetic · written by the team for training only
+"Hello, how do I set up two-factor authentication?!!!",out_of_scope,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, comment changer la langue du tableau de bord ? Merci.",out_of_scope,fr,synthetic · written by the team for training only
+"Bonjour, comment modifier l'adresse de facturation ? Répondez vite svp !",out_of_scope,fr,synthetic · written by the team for training only
+"Good morning, what is new in the latest product release?",out_of_scope,en,synthetic · written by the team for training only
+How do I set up two-factor authentication?!!!,out_of_scope,en,synthetic · written by the team for training only
+"Bonsoir, comment créer un nouvel utilisateur ?",out_of_scope,fr,synthetic · written by the team for training only
+"Bonjour à l'équipe, comment créer un nouvel utilisateur ?",out_of_scope,fr,synthetic · written by the team for training only
+"Hi, how do I change my password? Please check.",out_of_scope,en,synthetic · written by the team for training only
+Please help: what is new in the latest product release? Answer quickly please!,out_of_scope,en,synthetic · written by the team for training only
+"Bonjour à l'équipe, comment créer un nouvel utilisateur ? C'est urgent.",out_of_scope,fr,synthetic · written by the team for training only
+What is new in the latest product release?!!!,out_of_scope,en,synthetic · written by the team for training only
+Comment changer la langue du tableau de bord ? Merci d'avance.,out_of_scope,fr,synthetic · written by the team for training only
+"Hi, how do I change my password?!!!",out_of_scope,en,synthetic · written by the team for training only
+Please help: what is new in the latest product release? Thank you in advance.,out_of_scope,en,synthetic · written by the team for training only
+Question rapide : comment changer la langue du tableau de bord ? Merci.,out_of_scope,fr,synthetic · written by the team for training only
+Quick question: how can I invite a colleague to the dashboard?!!!,out_of_scope,en,synthetic · written by the team for training only
+Quick question: how do I download an invoice?,out_of_scope,en,synthetic · written by the team for training only
+Quick question: how can I invite a colleague to the dashboard? It is urgent.,out_of_scope,en,synthetic · written by the team for training only
+"Hi, what is new in the latest product release?!!!",out_of_scope,en,synthetic · written by the team for training only
+"Bonjour, comment changer la langue du tableau de bord ? Merci de vérifier.",out_of_scope,fr,synthetic · written by the team for training only
+Quick question: how can I change the logo on my payment page? Please check.,out_of_scope,en,synthetic · written by the team for training only
+Please help: how can I invite a colleague to the dashboard? It is urgent.,out_of_scope,en,synthetic · written by the team for training only
+"Hello, how do I download an invoice? It is urgent.",out_of_scope,en,synthetic · written by the team for training only
+Comment exporter mes données ? C'est urgent.,out_of_scope,fr,synthetic · written by the team for training only
+"Hi, how can I change the logo on my payment page? Answer quickly please!",out_of_scope,en,synthetic · written by the team for training only
+"Bonsoir, comment modifier l'adresse de facturation ?",out_of_scope,fr,synthetic · written by the team for training only
+Quick question: how can I invite a colleague to the dashboard?,out_of_scope,en,synthetic · written by the team for training only
+"Good morning, how can I invite a colleague to the dashboard? It is urgent.",out_of_scope,en,synthetic · written by the team for training only
+"HI, HOW DO I SET UP TWO-FACTOR AUTHENTICATION? PLEASE CHECK.",out_of_scope,en,synthetic · written by the team for training only
+PLEASE HELP: HOW CAN I CHANGE THE LOGO ON MY PAYMENT PAGE? PLEASE CHECK.,out_of_scope,en,synthetic · written by the team for training only
+COMMENT MODIFIER L'ADRESSE DE FACTURATION ?,out_of_scope,fr,synthetic · written by the team for training only
+QUESTION RAPIDE : COMMENT CRÉER UN NOUVEL UTILISATEUR ? RÉPONDEZ VITE SVP !,out_of_scope,fr,synthetic · written by the team for training only
+"HELLO, HOW DO I SET UP TWO-FACTOR AUTHENTICATION?!!!",out_of_scope,en,synthetic · written by the team for training only
+"HI, HOW DO I CHANGE MY PASSWORD? PLEASE CHECK.",out_of_scope,en,synthetic · written by the team for training only
+QUESTION RAPIDE : COMMENT CHANGER LA LANGUE DU TABLEAU DE BORD ? MERCI.,out_of_scope,fr,synthetic · written by the team for training only
+QUICK QUESTION: HOW CAN I INVITE A COLLEAGUE TO THE DASHBOARD? IT IS URGENT.,out_of_scope,en,synthetic · written by the team for training only
+"HI, WHAT IS NEW IN THE LATEST PRODUCT RELEASE?!!!",out_of_scope,en,synthetic · written by the team for training only
+"GOOD MORNING, HOW CAN I INVITE A COLLEAGUE TO THE DASHBOARD? IT IS URGENT.",out_of_scope,en,synthetic · written by the team for training only

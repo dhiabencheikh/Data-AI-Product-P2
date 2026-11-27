@@ -1,6 +1,6 @@
-# spec.md — executable spec · Ledgerly agent-assist copilot · v2 (Session 4)
+# spec.md — executable spec · Ledgerly agent-assist copilot · v2 (Session 4, final 27 November)
 
-> Session 3 skeleton, completed in Session 4. Same content as `03_product_brief.md` v2, with nothing left vague: inputs, outputs, edge cases, fallbacks, done.
+> Session 3 skeleton, completed in Session 4, final version 27 November (implemented in `/prototype`, measured in `evals/reports/report_v1.md`). Same content as `03_product_brief.md` v2, with nothing left vague: inputs, outputs, edge cases, fallbacks, done.
 
 ## problem
 Tier-1 agents at Ledgerly, a B2B payments platform with 800 merchants, spend 40 % of their handling time reading before they answer any of the 12,000 tickets a month. On each payment ticket they open the ledger, payouts, bank tools, the account record and past tickets to find where the payment the merchant means is stuck, then check every number by hand before replying. The copilot pre-reads the account when the ticket arrives and shows the agent the transaction, where it is stuck, the open flags on the account and a draft reply. The agent confirms, edits and sends; the copilot never sends anything and never moves money.
@@ -46,16 +46,16 @@ log      : {ticket_id, match, draft, edits, sent_by, sent_at}
 - out of scope ("how do I" questions, several merchant accounts, languages other than French and English) → no match, no draft; the ticket works as today
 
 ## fallbacks
-- confidence below [threshold — set on the eval-set, not tuned on it] → `no_confident_match`; the ticket works as today
+- router confidence below 0.70 (0.62 when the ticket carries a valid `TX-` reference and no risky word) → no draft, hand-over; the ticket works as today. The gate is never tuned on eval tickets
 - policy block → show the reason to the agent, no draft
 - the copilot or one data source is down → the panel says so; the ticket works as today
 - the agent clicks "Check in the ledger" → the transaction opens in the ledger; the proposal stays as it was
 - the agent clicks "Not this one" → the draft is discarded; manual search
 - hand to a referent or to legal → the pre-read goes with the ticket
-- kill switch → the Head of Support turns drafts off for everyone
+- override switch `COPILOT_MODE` → `SUGGEST_ONLY` (drafts visible, Insert/Send disabled) or `OFF` (no pre-read), for everyone; Head of Support by day, on-call engineer by night; an unknown value means `OFF`
 
 ## done_criteria
-- the success criterion from `03_product_brief.md` §7: on the 200-ticket eval-set, handling time falls by at least 38 % on tickets with a proposed match, and no more than 0.5 % of those end with a wrong transaction in the approved reply
+- the success criterion from `03_product_brief.md` §7: handling time falls by at least 38 % on tickets with a proposed match, and no more than 0.5 % of those end with a wrong transaction in the approved reply — measured with agents, in the A/B of `06_07` (the eval-set cannot time people)
 - a proposed match on at least 70 % of tickets, with match precision of at least 98 % (hypothesis 1 of `01_problem_statement.md`)
 - zero drafts that promise a refund, a chargeback or a dispute outcome on the adversarial cases
 - zero cases where another merchant's data appears
@@ -64,11 +64,16 @@ log      : {ticket_id, match, draft, edits, sent_by, sent_at}
 ## out_of_scope
 The WON'T column of the MoSCoW board: auto-send · automatic refunds, chargebacks or fee waivers · any chat or bot that talks to merchants · tickets spanning several merchant accounts · fine-tuning on merchant or payer data · languages other than French and English · "how do I" questions answered from the documentation · proactive messages to merchants.
 
-## v2_changes (added after evals/report_v0.md)
+## v2_changes (added after evals/report_v0.md; implemented and measured on 27 November, `evals/reports/report_v1.md`)
 Every top miss from `evals/report_v0.md` converted into an explicit specification rule:
 - **[CHANGE-1 · Lookup & Disambiguation — fixes `L-07`, `L-28`]:** When a merchant provides an approximate amount (e.g., "around 300 euros", "environ 450 euros") and multiple ledger candidates exist, `match` must rank candidates by `(payer_name_similarity + date_proximity)` before triggering `no_confident_match`. Only escalate when two candidates match both payer and date (e.g., `L-10`, `L-31`).
 - **[CHANGE-2 · Refund Reference Extraction — fixes `L-14`, `L-36`]:** The `read` and `match` steps must extract `RF-\d+` refund references in addition to `TX-\d+` payment references, and query the refund settlement log (`3–5 working days` bank delay) without triggering the human-only new-refund block.
-- **[CHANGE-3 · Noisy Text & Field-Mismatch Resilience — fixes `L-15`, `L-32`, `L-37`]:** Lower the routing escalation threshold from `0.70` to `0.62` when a valid `TX-\d+` or `M-\d+` identifier is present and no high-risk keyword (`refund`, `dispute`, `chargeback`, `waive`, `bank details change`) appears. When a form `TX-` reference does not match the ledger (`L-32`), fall back to `(merchant_id + amount + date + payer)` lookup and flag the mismatched reference to the agent.
+- **[CHANGE-3 · Noisy Text & Field-Mismatch Resilience — fixes `L-15`, `L-32`, `L-37`]:** Lower the routing escalation threshold from `0.70` to `0.62` when the ticket carries a `TX-\d+` reference (even one that is not on the account: the lookup then falls back on amount, date and payer) and the merchant's message contains no high-risk word (`refund`, `rembours…`, `dispute`, `chargeback`, `litige`, `contest…`, `waive`, `geste commercial`; not checked on refund-status questions, which name the refund by design). A bank change with money already sent is handled before the gate, as an account hold. When a form `TX-` reference does not match the ledger (`L-32`), fall back to `(merchant_id + amount + date + payer)` lookup and flag the mismatched reference to the agent.
+
+- **[CHANGE-4 · Router reads the merchant only — fixes 0 drafts on 50 in `report_v0.md`]:** the router classifies the merchant's message (or the form fields), never the ledger rows; it is trained on `prototype/data/router_training.csv` (346 phrases, none from the eval-set), French and English, including angry, misspelt and very-recent-payment phrasing.
+- **[CHANGE-5 · Wrong form reference goes to the agent — fixes `L-32`, `L-65`, `L-99` of run 1]:** the mismatch is shown in the agent's panel, never written in the reply; every reference written in a reply must exist on this merchant's account (`policy.py`).
+- **[CHANGE-6 · Refunds and disputes in v1]:** a refund already issued (`RF-`) gets a status draft; a request for a new refund, a dispute or a chargeback, and a fee waiver get no draft at all in v1 (hand-over), even where the label allows an L2 draft asking for documents: that draft comes after the A/B.
+- **[CHANGE-7 · Open misses of `evals/reports/report_v1.md`, to fix before step 1 of `08_launch_memo.md`]:** (a) the "received" reply says only what the ledger shows — no "next payout" sentence (`L-07`, `L-61`); (b) a whole-account flag (terms, KYC) routes the ticket by rule before the router (`L-16`, `L-83`); (c) the router is retrained on real phrasing from the shadow run, never on eval tickets (`L-28`, `L-30`, `L-60`, `L-72`, `L-77`).
 
 ## eval_set
-`evals/eval_set_v0.csv` — 20 invented cases now, 50 with Assignment 4, 200 by Session 5. Inputs generated with Claude; every label checked by hand by the team before any run. Recipe, prompt, labelling rule and FAIL conditions: `evals/README_eval_set.md`.
+`evals/eval_set_v0.csv` — 50 invented cases (Session 4); `evals/eval_set_v1.csv` — 100 cases (Session 5; 200 is the production standard). Run: `python prototype/run_eval.py`. Inputs generated with Claude; every label checked by hand by the team before any run. Recipe, prompt, labelling rule and FAIL conditions: `evals/README_eval_set.md`.
